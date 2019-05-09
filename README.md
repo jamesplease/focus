@@ -48,6 +48,10 @@ you may notice the similarity between routes and focus paths. Focus paths are ve
 difference is that routes represent the user's location within the app, whereas focus paths represent what has
 focus within the app.
 
+### Is this library right for me?
+
+The [limitations](#limitations) described below may help you to determine that.
+
 ## Getting Started
 
 Configure the Provider somewhere high up in your application's component tree. You may
@@ -146,3 +150,8 @@ export default function Profile() {
 - ["Pass the Remote" on the Netflix Tech Blog](https://medium.com/netflix-techblog/pass-the-remote-user-input-on-tv-devices-923f6920c9a8)
 - [bb/lrud](https://github.com/bbc/lrud)
 - [react-tv](https://github.com/raphamorim/react-tv)
+
+## Limitations
+
+- No support for pointer (mouse) inputs
+- No spatial navigation; everything is declarative
