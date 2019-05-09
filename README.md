@@ -154,4 +154,4 @@ export default function Profile() {
 ## Limitations
 
 - No support for pointer (mouse) inputs
-- No spatial navigation; everything is declarative
+- No spatial navigation; all transitions must be manually specified
