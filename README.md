@@ -148,7 +148,7 @@ export default function Profile() {
 ## Prior Art
 
 - ["Pass the Remote" on the Netflix Tech Blog](https://medium.com/netflix-techblog/pass-the-remote-user-input-on-tv-devices-923f6920c9a8)
-- [bb/lrud](https://github.com/bbc/lrud)
+- [bbc/lrud](https://github.com/bbc/lrud)
 - [react-tv](https://github.com/raphamorim/react-tv)
 
 ## Limitations
