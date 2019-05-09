@@ -1,0 +1,30 @@
+{
+  "name": "use-focus-path",
+  "version": "0.0.1",
+  "description": "Focus state management.",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jamesplease/use-focus-path.git"
+  },
+  "keywords": [
+    "lrud",
+    "focus",
+    "path",
+    "tv",
+    "remote",
+    "television"
+  ],
+  "author": "James Smith",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jamesplease/use-focus-path/issues"
+  },
+  "homepage": "https://github.com/jamesplease/use-focus-path#readme",
+  "peerDependencies": {
+    "react": "^16.8.0"
+  }
+}
