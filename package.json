@@ -1,7 +1,7 @@
 {
   "name": "use-focus-path",
   "version": "0.0.1",
-  "description": "Focus state management.",
+  "description": "A React Hook for managing focus in TV apps.",
   "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
