@@ -25,7 +25,9 @@ export default function FocusProvider({ initialFocusPath, children }) {
     setFocusState,
   });
 
-  return (
-    <FocusContext.Provider value={focusState}>{children}</FocusContext.Provider>
+  return React.createElement(
+    FocusContext.Provider,
+    { value: focusState },
+    children
   );
 }
