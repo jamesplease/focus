@@ -1,6 +1,6 @@
 {
   "name": "use-focus-path",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A React Hook for managing focus in TV apps.",
   "main": "src/index.js",
   "scripts": {
