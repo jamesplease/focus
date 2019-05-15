@@ -1,61 +1,43 @@
-import { useContext, useEffect, useMemo, useRef } from 'react';
+import { useContext, useEffect } from 'react';
 import FocusContext from './focus-context';
-import matchFocusPath from './match-focus-path';
 
-export default function useFocusPath(targetPath = '') {
-  const { focusPath, setFocusPath } = useContext(FocusContext);
+export default function useFocusPath(
+  nodeId = '',
+  {
+    focusOnMount,
+    parentId,
+    orientation = 'horizontal',
+    wrapping = false,
+    inputThrottle,
+    children,
+    onSelect,
+  } = {}
+) {
+  const { focusPath, setFocusPath, createNode, nodes } = useContext(
+    FocusContext
+  );
+  const node = nodes[nodeId] || {};
 
-  const targetPathRef = useRef(targetPath);
   useEffect(() => {
-    targetPathRef.current = targetPath;
-  }, [targetPath]);
+    createNode({
+      nodeId,
+      parentId,
+      focusOnMount,
+      wrapping,
+      orientation,
+      inputThrottle,
+      children,
+      onSelect,
+    });
+  }, []);
 
-  const result = useMemo(() => {
-    const { isFocused, isFocusedExact } = matchFocusPath({
-      currentFocusPath: focusPath,
-      testFocusPath: targetPath,
-    })
-  
-    let childPath;
-    if (!isFocused || targetPath === focusPath) {
-      childPath = '';
-    } else {
-      childPath = focusPath.replace(`${targetPath}.`, '');
-    }
-  
-    const stringChild = childPath.split('.')[0] || '';
-    const numericChild = stringChild ? Number(stringChild) : '';
-  
-    const child = Number.isNaN(numericChild) ? stringChild : numericChild;
-  
-    function setFocusedChild(newChild) {
-      setFocusPath(`${targetPathRef.current}.${newChild}`);
-    }
-  
-    function setFocusedSibling(sibling) {
-      const parts = targetPathRef.current.split('.');
-  
-      let parentPath;
-      if (parts.length === 1) {
-        parentPath = '';
-      } else {
-        parentPath = parts.slice(0, -1).join('.') + '.';
-      }
-  
-      setFocusPath(`${parentPath}${sibling}`);
-    }
+  return {
+    ...node,
+    nodes,
 
-    return {
-      isFocused,
-      isFocusedExact,
-      child,
-  
-      focusPath,
-      setFocusedChild,
-      setFocusedSibling,
-      setFocusPath,
-    }
-  }, [targetPath, focusPath, setFocusPath]);
-
-  return result;
+    focusPath,
+    setFocusPath,
+    setFocusedChild() {},
+    setFocusedSibling() {},
+  };
 }

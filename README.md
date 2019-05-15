@@ -35,34 +35,20 @@ yarn add use-focus-path
 LRUD is an acronym that stands for left-right-up-down, and it refers to the directional buttons typically found on remotes. In LRUD systems,
 input devices usually also have some kind of "submit" button, and, less commonly, a back button.
 
-### What is a Focus Path?
-
-A focus path is a string that represents an element on the page that has focus. For instance, you may
-have a focus path of `"profilePage"`, representing that the profile page of your app has focus.
-
-Focus paths can be hierarchical, too. A period is used to separate pieces of the path. In the focus
-path `profilePage.0`, the focus is on the 0th item within the profile page.
-
-If you have used a modern JavaScript router, such as [React Router](https://github.com/ReactTraining/react-router),
-you may notice the similarity between routes and focus paths. Focus paths are very similar to routes. The
-difference is that routes represent the user's location within the app, whereas focus paths represent what has
-focus within the app.
-
 ### Is this library right for me?
 
 The [limitations](#limitations) described below may help you to determine that.
 
 ## Getting Started
 
-Configure the Provider somewhere high up in your application's component tree. You may
-optionally specify an initial focus path.
+Configure the Provider somewhere high up in your application's component tree.
 
 ```jsx
 import { FocusProvider } from 'use-focus-path';
 
 export default function App() {
   return (
-    <FocusProvider initialFocusPath="app.profile.settings.0">
+    <FocusProvider>
       <AppContents />
     </FocusProvider>
   );
@@ -92,25 +78,22 @@ This library has two named exports: `FocusProvider` and `useFocusPath`.
 
 ### `<FocusProvider />`
 
-A [Context](https://reactjs.org/docs/context.html) Provider that you must place at the root of your application.
+A [Context](https://reactjs.org/docs/context.html) Provider that you must place at the root of your application. The
+`FocusProvider` accepts no props.
 
 ```jsx
 import { FocusProvider } from 'use-focus-path';
 
 export default function App() {
   return (
-    <FocusProvider initialFocusPath="app.profile.settings.0">
+    <FocusProvider>
       <AppContents />
     </FocusProvider>
   );
 }
 ```
 
-| Prop               | Default value | Description                                        |
-| ------------------ | ------------- | -------------------------------------------------- |
-| `initialFocusPath` | `""`          | The focus path to use when the app is initialized. |
-
-### `useFocusPath( targetFocusPath )`
+### `useFocusPath( targetFocusPath [, options] )`
 
 A [Hook](https://reactjs.org/docs/hooks-intro.html) that returns information about whether or not `targetFocusPath` is focused, as well as
 functions to update the focus path.
@@ -118,6 +101,18 @@ functions to update the focus path.
 | Arguments         | Type   | Default value | Description                                              |
 | ----------------- | ------ | ------------- | -------------------------------------------------------- |
 | `targetFocusPath` | string | `""`          | The focus path you are interested in knowing more about. |
+| `options`         | object |               | Additional options; see below.                           |
+
+All of the following options are optional.
+
+| Option         | Type     | Default value | Description                                                                                                     |
+| -------------- | -------- | ------------- | --------------------------------------------------------------------------------------------------------------- |
+| `focusOnMount` | boolean  | `false`       | Whether or not to focus this node when the component mounts.                                                    |
+| `parentId`     | string   |               | The ID of the parent of this focusable node.                                                                    |
+| `orientation`  | string   | 'horizontal'  | Whether the children of this node are arranged horizontally or vertically.                                      |
+| `wrapping`     | boolean  | 'false'       | Set to `true` for the navigation to wrap when the user reaches the start or end of the children list.           |
+| `children`     | array    |               | Specify children. Not necessary if the children specify `parentId.`                                             |
+| `onSelect`     | function |               | A function called whenever the user selects when this node is focused. Receives the node as the first argument. |
 
 The return value of the hook has the following properties:
 
@@ -135,7 +130,15 @@ The return value of the hook has the following properties:
 import { useFocusPath } from 'use-focus-path';
 
 export default function Profile() {
-  const { isFocused } = useFocusPath('profile');
+  const { isFocused } = useFocusPath('profile', {
+    onSelect({ isFocused, isFocusedExact }) {
+      console.log(
+        'The user just press the select button!',
+        isFocused,
+        isFocusedExact
+      );
+    },
+  });
 
   useEffect(() => {
     console.log('The focus state changed', isFocused);
@@ -154,4 +157,4 @@ export default function Profile() {
 ## Limitations
 
 - No support for pointer (mouse) inputs
-- No spatial navigation; all transitions must be manually specified
+- No spatial navigation; complex transitions must be manually managed
