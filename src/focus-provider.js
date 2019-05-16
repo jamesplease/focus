@@ -7,6 +7,7 @@ function getFocusState(focusTreeRef) {
   return {
     ...focusTreeRef.current.getState(),
     createNode: focusTreeRef.current.createNode,
+    destroyNode: focusTreeRef.current.destroyNode,
     setFocus: focusTreeRef.current.setFocus,
     moveFocusForward: focusTreeRef.current.moveFocusForward,
     moveFocusBackward: focusTreeRef.current.moveFocusBackward,

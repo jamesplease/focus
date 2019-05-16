@@ -35,7 +35,7 @@ export default function createNode(
   }
 
   // We start off the new nodes by adding our new ID.
-  // NOTE: existing nodes are squashed!
+  // NOTE: if the node already exists, it is squashed.
   const newNodes = {
     ...currentState.nodes,
     [nodeId]: {

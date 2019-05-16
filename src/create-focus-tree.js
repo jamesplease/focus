@@ -5,6 +5,8 @@ import getNodesFromFocusChange from './utils/get-nodes-from-focus-change';
 import defaultNode from './utils/default-node';
 import mergeTwoNodes from './utils/merge-two-nodes';
 import mergeTwoNodeLists from './utils/merge-two-node-lists';
+import createNodeUtil from './utils/create-node';
+import destroyNodeUtil from './utils/destroy-node';
 
 export default function createFocusTree({
   rootOrientation = 'horizontal',
@@ -165,151 +167,18 @@ export default function createFocusTree({
     handleArrow('down');
   }
 
-  function createNode(
-    nodeId,
-    {
-      parentId = 'root',
-      node,
-      focusOnMount = false,
-      wrapping = false,
-      orientation = 'horizontal',
-      children = null,
-      onSelect = null,
-    } = {}
-  ) {
-    // TODO: warn
-    if (nodeId === 'root') {
-      return;
-    }
-
-    let updatedParentNode;
-
-    const parentNode = currentState.nodes[parentId] || defaultNode;
-    const parentChildren = parentNode.children;
-
-    let newChildren;
-    if (Array.isArray(parentChildren)) {
-      newChildren = parentChildren.concat(nodeId);
-    } else {
-      newChildren = [nodeId];
-    }
-
-    updatedParentNode = {
-      id: parentId,
-      children: newChildren,
-      // If the child is focused, then the parent is as well. Note: the parent is not focused "exactly"
-      // in these situations.
-      isFocused: focusOnMount,
-    };
-
-    const childrenNodes = {};
-    if (Array.isArray(children)) {
-      children.forEach(childId => {
-        childrenNodes[childId] = {
-          ...defaultNode,
-          parentId: nodeId,
-          id: childId,
-        };
-      });
-    }
-
-    const newNode = {
-      ...defaultNode,
-      ...node,
-      parentId,
-      id: nodeId,
-      wrapping,
-      orientation,
-      onSelect,
-    };
-
-    if (Array.isArray(children)) {
-      newNode.children = children;
-    }
-
-    const nextNodes = {
-      ...currentState.nodes,
-      [parentId]: {
-        parentId: 'root',
-        ...currentState.nodes[parentId],
-        ...updatedParentNode,
-      },
-      [nodeId]: newNode,
-    };
-
-    let otherNodes;
-    let focusedNodeId;
-    let focusHierarchy;
-
-    const parentExists = Boolean(currentState.nodes[parentId]);
-    const attachedNodeId = parentExists ? parentId : 'root';
-    const attachedNode =
-      currentState.nodes[parentId] || currentState.nodes.root;
-
-    const updatedRoot = {
-      ...currentState.nodes.root,
-    };
-
-    if (!parentExists) {
-      let newRootChildren;
-      if (Array.isArray(updatedRoot.children)) {
-        newRootChildren = updatedRoot.children.concat(parentId);
-      } else {
-        newRootChildren = [parentId];
-      }
-
-      updatedRoot.children = newRootChildren;
-    }
-
-    nextNodes.root = updatedRoot;
-
-    if (focusOnMount || attachedNode.isFocusedExact) {
-      const focusId =
-        focusOnMount || attachedNode.isFocusedExact
-          ? nodeId
-          : currentState.focusedNodeId;
-
-      const focusChange = getNodesFromFocusChange(nextNodes, focusId);
-      otherNodes = focusChange.nodes;
-
-      focusedNodeId = focusChange.focusedNodeId;
-      focusHierarchy = focusChange.focusHierarchy;
-      otherNodes[nodeId] = {
-        ...newNode,
-        ...otherNodes[nodeId],
-      };
-
-      updatedParentNode = {
-        parentId: 'root',
-        ...currentState.nodes[parentId],
-        ...updatedParentNode,
-        ...otherNodes[parentId],
-      };
-    } else {
-      otherNodes = {
-        [nodeId]: newNode,
-      };
-    }
-
-    otherNodes.root = {
-      ...mergeTwoNodes(currentState.nodes.root, updatedRoot),
-      ...otherNodes.root,
-    };
-
-    const nodeChanges = mergeTwoNodeLists(childrenNodes, otherNodes);
-
-    if (updatedParentNode) {
-      nodeChanges[parentId] = updatedParentNode;
-    }
-
-    updateNodes(nodeChanges, {
-      clearFocus: true,
-      focusedNodeId,
-      focusHierarchy,
-    });
+  function createNode(nodeId, opts) {
+    console.log('wot', nodeId, opts);
+    const newState = createNodeUtil(currentState, nodeId, opts);
+    currentState = newState;
+    onUpdate();
   }
 
-  function destroyNode() {}
+  function destroyNode(nodeId) {
+    const newState = destroyNodeUtil(currentState, nodeId);
+    currentState = newState;
+    onUpdate();
+  }
 
   return {
     subscribe,

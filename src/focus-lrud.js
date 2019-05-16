@@ -31,6 +31,8 @@ export default function focusLrud(focusTree) {
       const state = focusTree.getState();
       const { focusHierarchy } = state;
 
+      // TODO: use a bubbling system rather than the
+      // `focusHierarchy` directly
       focusHierarchy.forEach(focusedNodeId => {
         const node = state.nodes[focusedNodeId];
 

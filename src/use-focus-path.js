@@ -13,14 +13,17 @@ export default function useFocusPath(
     onSelect,
   } = {}
 ) {
-  const { focusPath, setFocusPath, createNode, nodes } = useContext(
-    FocusContext
-  );
+  const {
+    focusPath,
+    setFocusPath,
+    createNode,
+    destroyNode,
+    nodes,
+  } = useContext(FocusContext);
   const node = nodes[nodeId] || {};
 
   useEffect(() => {
-    createNode({
-      nodeId,
+    createNode(nodeId, {
       parentId,
       focusOnMount,
       wrapping,
@@ -29,6 +32,10 @@ export default function useFocusPath(
       children,
       onSelect,
     });
+
+    return () => {
+      destroyNode();
+    };
   }, []);
 
   return {
