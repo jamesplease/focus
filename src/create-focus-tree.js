@@ -2,17 +2,27 @@ import getIndex from './utils/get-index';
 import findTargetNode from './utils/find-target-node';
 import getUnfocusedNodes from './utils/reset-focused-nodes';
 import getNodesFromFocusChange from './utils/get-nodes-from-focus-change';
+import defaultNode from './utils/default-node';
+import mergeTwoNodes from './utils/merge-two-nodes';
+import mergeTwoNodeLists from './utils/merge-two-node-lists';
 
-const defaultNode = {
-  isFocused: false,
-  isFocusedExact: false,
-  children: null,
-};
-
-export default function createFocusTree() {
+export default function createFocusTree({
+  rootOrientation = 'horizontal',
+  rootWrapping = false,
+} = {}) {
   let currentState = {
-    focusedNodeId: null,
-    nodes: {},
+    focusedNodeId: 'root',
+    focusHierarchy: ['root'],
+    nodes: {
+      root: {
+        id: 'root',
+        parentId: null,
+        isFocused: true,
+        isFocusedExact: true,
+        orientation: rootOrientation,
+        wrapping: rootWrapping,
+      },
+    },
   };
 
   let listeners = [];
@@ -155,38 +165,42 @@ export default function createFocusTree() {
     handleArrow('down');
   }
 
-  function createNode({
+  function createNode(
     nodeId,
-    parentId,
-    node,
-    focusOnMount = false,
-    wrapping,
-    orientation,
-    children,
-    inputThrottle,
-    onSelect,
-  }) {
+    {
+      parentId = 'root',
+      node,
+      focusOnMount = false,
+      wrapping = false,
+      orientation = 'horizontal',
+      children = null,
+      onSelect = null,
+    } = {}
+  ) {
+    // TODO: warn
+    if (nodeId === 'root') {
+      return;
+    }
+
     let updatedParentNode;
 
-    if (typeof parentId === 'string') {
-      const parentNode = currentState.nodes[parentId] || defaultNode;
-      const parentChildren = parentNode.children;
+    const parentNode = currentState.nodes[parentId] || defaultNode;
+    const parentChildren = parentNode.children;
 
-      let newChildren;
-      if (Array.isArray(parentChildren)) {
-        newChildren = parentChildren.concat(nodeId);
-      } else {
-        newChildren = [nodeId];
-      }
-
-      updatedParentNode = {
-        id: parentId,
-        children: newChildren,
-        // If the child is focused, then the parent is as well. Note: the parent is not focused "exactly"
-        // in these situations.
-        isFocused: focusOnMount,
-      };
+    let newChildren;
+    if (Array.isArray(parentChildren)) {
+      newChildren = parentChildren.concat(nodeId);
+    } else {
+      newChildren = [nodeId];
     }
+
+    updatedParentNode = {
+      id: parentId,
+      children: newChildren,
+      // If the child is focused, then the parent is as well. Note: the parent is not focused "exactly"
+      // in these situations.
+      isFocused: focusOnMount,
+    };
 
     const childrenNodes = {};
     if (Array.isArray(children)) {
@@ -200,12 +214,12 @@ export default function createFocusTree() {
     }
 
     const newNode = {
+      ...defaultNode,
       ...node,
       parentId,
       id: nodeId,
       wrapping,
       orientation,
-      inputThrottle,
       onSelect,
     };
 
@@ -213,17 +227,63 @@ export default function createFocusTree() {
       newNode.children = children;
     }
 
+    const nextNodes = {
+      ...currentState.nodes,
+      [parentId]: {
+        parentId: 'root',
+        ...currentState.nodes[parentId],
+        ...updatedParentNode,
+      },
+      [nodeId]: newNode,
+    };
+
     let otherNodes;
     let focusedNodeId;
     let focusHierarchy;
-    if (focusOnMount) {
-      const focusChange = getNodesFromFocusChange(currentState.nodes, nodeId);
+
+    const parentExists = Boolean(currentState.nodes[parentId]);
+    const attachedNodeId = parentExists ? parentId : 'root';
+    const attachedNode =
+      currentState.nodes[parentId] || currentState.nodes.root;
+
+    const updatedRoot = {
+      ...currentState.nodes.root,
+    };
+
+    if (!parentExists) {
+      let newRootChildren;
+      if (Array.isArray(updatedRoot.children)) {
+        newRootChildren = updatedRoot.children.concat(parentId);
+      } else {
+        newRootChildren = [parentId];
+      }
+
+      updatedRoot.children = newRootChildren;
+    }
+
+    nextNodes.root = updatedRoot;
+
+    if (focusOnMount || attachedNode.isFocusedExact) {
+      const focusId =
+        focusOnMount || attachedNode.isFocusedExact
+          ? nodeId
+          : currentState.focusedNodeId;
+
+      const focusChange = getNodesFromFocusChange(nextNodes, focusId);
       otherNodes = focusChange.nodes;
+
       focusedNodeId = focusChange.focusedNodeId;
       focusHierarchy = focusChange.focusHierarchy;
       otherNodes[nodeId] = {
-        ...otherNodes[nodeId],
         ...newNode,
+        ...otherNodes[nodeId],
+      };
+
+      updatedParentNode = {
+        parentId: 'root',
+        ...currentState.nodes[parentId],
+        ...updatedParentNode,
+        ...otherNodes[parentId],
       };
     } else {
       otherNodes = {
@@ -231,10 +291,12 @@ export default function createFocusTree() {
       };
     }
 
-    const nodeChanges = {
-      ...otherNodes,
-      ...childrenNodes,
+    otherNodes.root = {
+      ...mergeTwoNodes(currentState.nodes.root, updatedRoot),
+      ...otherNodes.root,
     };
+
+    const nodeChanges = mergeTwoNodeLists(childrenNodes, otherNodes);
 
     if (updatedParentNode) {
       nodeChanges[parentId] = updatedParentNode;
@@ -247,10 +309,13 @@ export default function createFocusTree() {
     });
   }
 
+  function destroyNode() {}
+
   return {
     subscribe,
     getState,
     createNode,
+    destroyNode,
     setFocus,
     handleRightArrow,
     handleLeftArrow,

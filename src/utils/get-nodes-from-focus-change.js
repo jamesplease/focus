@@ -30,7 +30,9 @@ export default function getNodesFromFocusChange(
       const thisNode = nodes[nodeId] || defaultNode;
       const children = thisNode.children;
 
-      activeChildIndex = children.indexOf(nextNodeId);
+      activeChildIndex = Array.isArray(children)
+        ? children.indexOf(nextNodeId)
+        : -1;
     }
 
     result[nodeId] = {
