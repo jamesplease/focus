@@ -6,7 +6,6 @@ export default function getNearestNode(nodes, nodeId) {
   const parentId = node.parentId;
 
   if (typeof parentId !== 'string') {
-    console.log('goodbye', node);
     return null;
   }
 
@@ -19,5 +18,5 @@ export default function getNearestNode(nodes, nodeId) {
 
   // Right now, we find the first child that _isn't_ the deleted node.
   // This will tend to "reset" to the 0th child, which we may not want.
-  return children.find(v => v.id !== nodeId);
+  return children.find(v => v !== nodeId);
 }

@@ -23,30 +23,46 @@ export default function createNode(
   nodeId,
   {
     focusOnMount = false,
-    parentId = defaultNode.parentId,
-    wrapping = defaultNode.wrapping,
-    orientation = defaultNode.orientation,
-    children = defaultNode.children,
-    onSelect = defaultNode.onSelect,
+    parentId = 'root',
+    wrapping,
+    orientation,
+    children,
+    onSelect,
   } = {}
 ) {
   if (nodeId === 'root' || typeof nodeId !== 'string') {
     return currentState;
   }
 
+  const existingNode = currentState.nodes[nodeId];
+  const mergedNode = {
+    ...defaultNode,
+    ...existingNode,
+    id: nodeId,
+    parentId,
+  };
+
+  if (typeof wrapping !== 'undefined') {
+    mergedNode.wrapping = wrapping;
+  }
+
+  if (typeof orientation !== 'undefined') {
+    mergedNode.orientation = orientation;
+  }
+
+  if (typeof children !== 'undefined') {
+    mergedNode.children = children;
+  }
+
+  if (typeof onSelect !== 'undefined') {
+    mergedNode.onSelect = onSelect;
+  }
+
   // We start off the new nodes by adding our new ID.
   // NOTE: if the node already exists, it is squashed.
   const newNodes = {
     ...currentState.nodes,
-    [nodeId]: {
-      ...defaultNode,
-      id: nodeId,
-      parentId: parentId,
-      wrapping,
-      orientation,
-      children,
-      onSelect,
-    },
+    [nodeId]: mergedNode,
   };
 
   if (Array.isArray(children)) {
@@ -62,40 +78,26 @@ export default function createNode(
   const parentExists = Boolean(currentState.nodes[parentId]);
 
   if (!parentExists) {
-    newNodes[parentId] = {
-      ...defaultNode,
-      id: parentId,
-      parentId: 'root',
-      children: [nodeId],
-    };
-
-    const rootNode = currentState.nodes.root;
-    const rootChildren = rootNode.children;
-
-    const newRootChildren = Array.isArray(rootChildren)
-      ? rootChildren.concat(parentId)
-      : [parentId];
-
-    newNodes.root = mergeTwoNodes(rootNode, {
-      children: newRootChildren,
-    });
-  } else {
-    const parentNode = currentState.nodes[parentId];
-    const parentChildren = parentNode.children;
-
-    const newParentChildren = Array.isArray(parentChildren)
-      ? parentChildren.concat(nodeId)
-      : [nodeId];
-
-    newNodes[parentId] = mergeTwoNodes(parentNode, {
-      children: newParentChildren,
-    });
+    // TODO: warn here
+    console.warn('ERROR!');
+    return currentState;
   }
+
+  const parentNode = currentState.nodes[parentId];
+  const parentChildren = parentNode.children;
+
+  const newParentChildren = Array.isArray(parentChildren)
+    ? parentChildren.concat(nodeId)
+    : [nodeId];
+
+  newNodes[parentId] = mergeTwoNodes(parentNode, {
+    children: newParentChildren,
+  });
 
   // The attached node is the first node in the hierarchy that
   // existed before this operation where we are attaching the new node.
   // It is either the root or an already-existing parent node.
-  const attachedNodeId = parentExists ? parentId : 'root';
+  const attachedNodeId = parentId;
   // const attachedNodeIsParent = attachedNodeId === parentId;
   const attachedNode = currentState.nodes[attachedNodeId];
 
@@ -112,7 +114,10 @@ export default function createNode(
 
   const newFocusId = focusOnMount ? nodeId : attachedNodeId;
   const { nodes, focusedNodeId, focusHierarchy } = getNodesFromFocusChange(
-    newNodes,
+    {
+      ...currentState,
+      nodes: newNodes,
+    },
     newFocusId
   );
 

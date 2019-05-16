@@ -1,4 +1,4 @@
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useMemo, useRef } from 'react';
 import FocusContext from './focus-context';
 
 export default function useFocusPath(
@@ -20,9 +20,28 @@ export default function useFocusPath(
     destroyNode,
     nodes,
   } = useContext(FocusContext);
-  const node = nodes[nodeId] || {};
+  const possibleNode = nodes[nodeId];
+  const hasNode = Boolean(possibleNode);
+
+  const hasNodeRef = useRef(hasNode);
 
   useEffect(() => {
+    hasNodeRef.current = hasNode;
+  }, [hasNode]);
+
+  const node = nodes[nodeId] || {
+    id: nodeId,
+    isFocused: false,
+    isFocusedExact: false,
+    children: null,
+    activeChildIndex: null,
+  };
+
+  const createdRef = useRef(false);
+
+  if (!createdRef.current) {
+    createdRef.current = true;
+
     createNode(nodeId, {
       parentId,
       focusOnMount,
@@ -32,9 +51,13 @@ export default function useFocusPath(
       children,
       onSelect,
     });
+  }
 
+  useEffect(() => {
     return () => {
-      destroyNode();
+      if (hasNodeRef.current) {
+        destroyNode(nodeId);
+      }
     };
   }, []);
 

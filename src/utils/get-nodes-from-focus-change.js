@@ -4,11 +4,13 @@ import defaultNode from './default-node';
 // TODO: if `newFocusId` is a child, you must go up its tree
 // to set focus to the parent
 export default function getNodesFromFocusChange(
-  nodes,
+  currentState,
   newFocusId,
   orientation,
   preferEnd
 ) {
+  const nodes = currentState.nodes;
+
   const focusHierarchy = getFocusedHierarchy(
     nodes,
     newFocusId,
@@ -16,8 +18,22 @@ export default function getNodesFromFocusChange(
     preferEnd
   );
 
+  const updatedNodes = currentState.focusHierarchy.reduce((result, nodeId) => {
+    // We only reset the focus state if the node still exists.
+    // Otherwise, it may have been deleted.
+    if (currentState.nodes[nodeId]) {
+      result[nodeId] = {
+        isFocused: false,
+        isFocusedExact: false,
+        activeChildIndex: null,
+      };
+    }
+
+    return result;
+  }, {});
+
   let focusedNodeId;
-  const updatedNodes = focusHierarchy.reduce((result, nodeId, index) => {
+  focusHierarchy.forEach((nodeId, index) => {
     const isLeaf = index === focusHierarchy.length - 1;
 
     if (isLeaf) {
@@ -35,14 +51,12 @@ export default function getNodesFromFocusChange(
         : -1;
     }
 
-    result[nodeId] = {
+    updatedNodes[nodeId] = {
       isFocused: true,
       isFocusedExact: isLeaf,
       activeChildIndex,
     };
-
-    return result;
-  }, {});
+  });
 
   return {
     nodes: updatedNodes,

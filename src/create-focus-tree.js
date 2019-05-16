@@ -98,7 +98,7 @@ export default function createFocusTree({
 
   function setFocus(nodeId, orientation, preferEnd) {
     const { nodes, focusHierarchy, focusedNodeId } = getNodesFromFocusChange(
-      currentState.nodes,
+      currentState,
       nodeId,
       orientation,
       preferEnd
@@ -168,7 +168,6 @@ export default function createFocusTree({
   }
 
   function createNode(nodeId, opts) {
-    console.log('wot', nodeId, opts);
     const newState = createNodeUtil(currentState, nodeId, opts);
     currentState = newState;
     onUpdate();

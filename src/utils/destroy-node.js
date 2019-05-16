@@ -3,6 +3,18 @@ import mergeTwoNodeLists from './merge-two-node-lists';
 import getNodesFromFocusChange from './get-nodes-from-focus-change';
 import getNearestNode from './get-nearest-node';
 
+function recursivelyDeleteChildren(nodes, children) {
+  children.forEach(childId => {
+    const childChildren = nodes[childId] ? nodes[childId].children : null;
+
+    delete nodes[childId];
+
+    if (Array.isArray(childChildren)) {
+      recursivelyDeleteChildren(nodes, childChildren);
+    }
+  });
+}
+
 export default function destroyNode(currentState, nodeId) {
   // If this is an invalid request, then we do nothing
   if (nodeId === 'root' || typeof nodeId !== 'string') {
@@ -17,7 +29,7 @@ export default function destroyNode(currentState, nodeId) {
 
   // We only need to completely refocus when this is exactly focused.
   // When it is merely `isFocused`, we can just update the focusHierarchy.
-  const recomputeFocus = currentNode.isFocusedExact;
+  const recomputeFocus = currentNode.isFocused;
 
   // Clone our nodes, then delete this one right off the bat.
   const newNodes = {
@@ -34,36 +46,47 @@ export default function destroyNode(currentState, nodeId) {
     ? currentNode.children
     : [];
 
+  recursivelyDeleteChildren(newNodes, ownChildren);
+
   let newParentChildren;
   if (parentChildren.length === 1) {
     newParentChildren = null;
   } else {
-    const nodeIndexInChildren = parentChildren.indexOf(nodeId);
-    newParentChildren = [...parentChildren];
-    newParentChildren.splice(nodeIndexInChildren, 1, ...ownChildren);
+    newParentChildren = parentChildren.filter(id => id !== nodeId);
+    // const nodeIndexInChildren = parentChildren.indexOf(nodeId);
+    // newParentChildren = [...parentChildren];
+    // newParentChildren.splice(nodeIndexInChildren, 1, ...ownChildren);
+  }
+
+  if (!recomputeFocus) {
+    newNodes[parentId] = mergeTwoNodes(parentNode, {
+      children: newParentChildren,
+    });
+
+    return {
+      ...currentState,
+      nodes: newNodes,
+    };
   }
 
   newNodes[parentId] = mergeTwoNodes(parentNode, {
     children: newParentChildren,
   });
 
-  if (!recomputeFocus) {
-    const focusHierarchy = currentNode.isFocused
-      ? currentState.focusHierarchy.filter(id => id !== nodeId)
-      : currentState.focusHierarchy;
-
-    return {
-      ...currentState,
-      focusHierarchy,
-      nodes: newNodes,
-    };
-  }
-
   const newFocusId = getNearestNode(currentState.nodes, nodeId);
+
   const { nodes, focusedNodeId, focusHierarchy } = getNodesFromFocusChange(
-    newNodes,
+    {
+      ...currentState,
+      nodes: newNodes,
+    },
     newFocusId
   );
+
+  // const focusHierarchy = currentState.focusHierarchy.slice(
+  //   0,
+  //   currentState.focusHierarchy.indexOf(nodeId)
+  // );
 
   return {
     ...currentState,
