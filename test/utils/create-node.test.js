@@ -1,41 +1,23 @@
-import createNode from '../../src/utils/create-node';
+import createNode from '../../src/focus-tree/utils/create-node';
 
 describe('createNode()', () => {
-  it('returns the same state when calling it with no nodeId', () => {
-    const currentState = {
-      focusHierarchy: ['root'],
-      focusedNodeId: 'root',
-      nodes: {
-        root: {
-          id: 'root',
-          parentId: null,
+  // it('returns the same state when calling it with no nodeId', () => {
+  //   const currentState = {
+  //     focusHierarchy: ['root'],
+  //     focusedNodeId: 'root',
+  //     nodes: {
+  //       root: {
+  //         id: 'root',
+  //         parentId: null,
 
-          isFocused: true,
-          isFocusedExact: true,
-        },
-      },
-    };
+  //         isFocused: true,
+  //         isFocusedExact: true,
+  //       },
+  //     },
+  //   };
 
-    expect(createNode(currentState)).toBe(currentState);
-  });
-
-  it('returns the same state when calling it with the nodeId of `root`', () => {
-    const currentState = {
-      focusHierarchy: ['root'],
-      focusedNodeId: 'root',
-      nodes: {
-        root: {
-          id: 'root',
-          parentId: null,
-
-          isFocused: true,
-          isFocusedExact: true,
-        },
-      },
-    };
-
-    expect(createNode(currentState, 'root')).toBe(currentState);
-  });
+  //   expect(createNode(currentState)).toBe(currentState);
+  // });
 
   it('computes correctly when calling it with a valid nodeId, but nothing else', () => {
     const currentState = {
@@ -68,6 +50,7 @@ describe('createNode()', () => {
 
           children: ['one'],
           activeChildIndex: 0,
+          previousActiveChildIndex: null,
         },
         one: {
           id: 'one',
@@ -76,154 +59,20 @@ describe('createNode()', () => {
           isFocused: true,
           isFocusedExact: true,
 
-          children: null,
-          activeChildIndex: null,
+          disabled: false,
 
-          wrapping: false,
-          onSelect: null,
-          orientation: 'horizontal',
-        },
-      },
-    });
-  });
-
-  it('computes correctly when passing children', () => {
-    const currentState = {
-      focusHierarchy: ['root'],
-      focusedNodeId: 'root',
-      nodes: {
-        root: {
-          id: 'root',
-          parentId: null,
-
-          isFocused: true,
-          isFocusedExact: true,
+          onArrow: null,
+          onDown: null,
+          onKey: null,
+          onLeft: null,
+          onMove: null,
+          onRight: null,
+          onUp: null,
 
           children: null,
           activeChildIndex: null,
-        },
-      },
-    };
-
-    expect(
-      createNode(currentState, 'one', { children: ['childOne', 'childTwo'] })
-    ).toEqual({
-      focusHierarchy: ['root', 'one', 'childOne'],
-      focusedNodeId: 'childOne',
-      nodes: {
-        root: {
-          id: 'root',
-          parentId: null,
-
-          isFocused: true,
-          isFocusedExact: false,
-
-          children: ['one'],
-          activeChildIndex: 0,
-        },
-        one: {
-          id: 'one',
-          parentId: 'root',
-
-          isFocused: true,
-          isFocusedExact: false,
-
-          children: ['childOne', 'childTwo'],
-          activeChildIndex: 0,
-
-          wrapping: false,
-          onSelect: null,
-          orientation: 'horizontal',
-        },
-        childOne: {
-          id: 'childOne',
-          parentId: 'one',
-
-          isFocused: true,
-          isFocusedExact: true,
-
-          children: null,
-          activeChildIndex: null,
-
-          wrapping: false,
-          onSelect: null,
-          orientation: 'horizontal',
-        },
-
-        childTwo: {
-          id: 'childTwo',
-          parentId: 'one',
-
-          isFocused: false,
-          isFocusedExact: false,
-
-          children: null,
-          activeChildIndex: null,
-
-          wrapping: false,
-          onSelect: null,
-          orientation: 'horizontal',
-        },
-      },
-    });
-  });
-
-  it('computes correctly when calling it with a valid nodeId and a non-existing parentId', () => {
-    const currentState = {
-      focusHierarchy: ['root'],
-      focusedNodeId: 'root',
-      nodes: {
-        root: {
-          id: 'root',
-          parentId: null,
-
-          isFocused: true,
-          isFocusedExact: true,
-        },
-      },
-    };
-
-    expect(
-      createNode(currentState, 'one', {
-        parentId: 'oneParent',
-      })
-    ).toEqual({
-      focusHierarchy: ['root', 'oneParent', 'one'],
-      focusedNodeId: 'one',
-      nodes: {
-        root: {
-          id: 'root',
-          parentId: null,
-
-          isFocused: true,
-          isFocusedExact: false,
-
-          children: ['oneParent'],
-          activeChildIndex: 0,
-        },
-        oneParent: {
-          id: 'oneParent',
-          parentId: 'root',
-
-          isFocused: true,
-          isFocusedExact: false,
-
-          children: ['one'],
-          activeChildIndex: 0,
-
-          wrapping: false,
-          onSelect: null,
-          orientation: 'horizontal',
-        },
-        one: {
-          id: 'one',
-          parentId: 'oneParent',
-
-          isFocused: true,
-          isFocusedExact: true,
-
-          children: null,
-          activeChildIndex: null,
+          previousActiveChildIndex: null,
+          restoreActiveChildIndex: false,
 
           wrapping: false,
           onSelect: null,
@@ -278,6 +127,7 @@ describe('createNode()', () => {
 
           children: ['oneParent'],
           activeChildIndex: 0,
+          previousActiveChildIndex: 0,
         },
         oneParent: {
           id: 'oneParent',
@@ -288,6 +138,7 @@ describe('createNode()', () => {
 
           children: ['one'],
           activeChildIndex: 0,
+          previousActiveChildIndex: null,
         },
         one: {
           id: 'one',
@@ -299,9 +150,20 @@ describe('createNode()', () => {
           children: null,
           activeChildIndex: null,
 
-          wrapping: false,
+          onArrow: null,
+          onDown: null,
+          onKey: null,
+          onLeft: null,
+          onMove: null,
+          onUp: null,
+          onRight: null,
           onSelect: null,
+
+          disabled: false,
+          wrapping: false,
           orientation: 'horizontal',
+          previousActiveChildIndex: null,
+          restoreActiveChildIndex: false,
         },
       },
     });
@@ -393,9 +255,19 @@ describe('createNode()', () => {
           children: null,
           activeChildIndex: null,
 
-          wrapping: false,
+          onArrow: null,
+          onDown: null,
+          onKey: null,
+          onLeft: null,
+          onMove: null,
+          onRight: null,
+          onUp: null,
           onSelect: null,
+
+          disabled: false,
+          wrapping: false,
           orientation: 'horizontal',
+          restoreActiveChildIndex: false,
         },
       },
     });
@@ -480,6 +352,7 @@ describe('createNode()', () => {
         test: {
           id: 'test',
           parentId: 'nodeOne',
+          disabled: false,
 
           isFocused: false,
           isFocusedExact: false,
@@ -487,117 +360,19 @@ describe('createNode()', () => {
           children: null,
           activeChildIndex: null,
 
-          wrapping: false,
+          onArrow: null,
+          onDown: null,
+          onKey: null,
+          onLeft: null,
+          onMove: null,
+          onRight: null,
+          onUp: null,
           onSelect: null,
-          orientation: 'horizontal',
-        },
-      },
-    });
-  });
 
-  it('computes correctly when a parent does not exist, and it will not receive focused', () => {
-    const currentState = {
-      focusHierarchy: ['root', 'nodeTwo'],
-      focusedNodeId: 'nodeTwo',
-      nodes: {
-        root: {
-          id: 'root',
-          parentId: null,
-
-          isFocused: true,
-          isFocusedExact: false,
-
-          children: ['nodeOne', 'nodeTwo'],
-          activeChildIndex: 1,
-        },
-        nodeOne: {
-          id: 'nodeOne',
-          parentId: 'root',
-
-          isFocused: false,
-          isFocusedExact: false,
-
-          children: null,
-          activeChildIndex: null,
-        },
-        nodeTwo: {
-          id: 'nodeTwo',
-          parentId: 'root',
-
-          isFocused: true,
-          isFocusedExact: true,
-
-          children: null,
-          activeChildIndex: null,
-        },
-      },
-    };
-
-    expect(
-      createNode(currentState, 'test', {
-        parentId: 'newParent',
-      })
-    ).toEqual({
-      focusHierarchy: ['root', 'nodeTwo'],
-      focusedNodeId: 'nodeTwo',
-      nodes: {
-        root: {
-          id: 'root',
-          parentId: null,
-
-          isFocused: true,
-          isFocusedExact: false,
-
-          children: ['nodeOne', 'nodeTwo', 'newParent'],
-          activeChildIndex: 1,
-        },
-        nodeOne: {
-          id: 'nodeOne',
-          parentId: 'root',
-
-          isFocused: false,
-          isFocusedExact: false,
-
-          children: null,
-          activeChildIndex: null,
-        },
-        nodeTwo: {
-          id: 'nodeTwo',
-          parentId: 'root',
-
-          isFocused: true,
-          isFocusedExact: true,
-
-          children: null,
-          activeChildIndex: null,
-        },
-        newParent: {
-          id: 'newParent',
-          parentId: 'root',
-
-          isFocused: false,
-          isFocusedExact: false,
-
-          children: ['test'],
-          activeChildIndex: null,
-
+          disabled: false,
           wrapping: false,
-          onSelect: null,
           orientation: 'horizontal',
-        },
-        test: {
-          id: 'test',
-          parentId: 'newParent',
-
-          isFocused: false,
-          isFocusedExact: false,
-
-          children: null,
-          activeChildIndex: null,
-
-          wrapping: false,
-          onSelect: null,
-          orientation: 'horizontal',
+          restoreActiveChildIndex: false,
         },
       },
     });
@@ -676,6 +451,8 @@ describe('createNode()', () => {
           activeChildIndex: null,
         },
         test: {
+          disabled: false,
+
           id: 'test',
           parentId: 'root',
 
@@ -685,9 +462,18 @@ describe('createNode()', () => {
           children: null,
           activeChildIndex: null,
 
-          wrapping: false,
+          onArrow: null,
+          onDown: null,
+          onKey: null,
+          onLeft: null,
+          onMove: null,
+          onRight: null,
+          onUp: null,
           onSelect: null,
+
+          wrapping: false,
           orientation: 'horizontal',
+          restoreActiveChildIndex: false,
         },
       },
     });

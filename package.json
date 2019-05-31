@@ -3,6 +3,9 @@
   "version": "0.0.4",
   "description": "A React Component for managing focus in TV apps",
   "main": "src/index.js",
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "test": "npm run test:unit",
     "test:unit": "jest",

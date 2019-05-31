@@ -1,4 +1,4 @@
-import { createFocusTree } from '../src';
+import createFocusTree from '../src/focus-tree/create-focus-tree';
 
 describe('createFocusTree()', () => {
   it('returns an object with the right shape', () => {
@@ -9,10 +9,6 @@ describe('createFocusTree()', () => {
     expect(typeof tree.createNode).toEqual('function');
     expect(typeof tree.destroyNode).toEqual('function');
     expect(typeof tree.setFocus).toEqual('function');
-    expect(typeof tree.handleRightArrow).toEqual('function');
-    expect(typeof tree.handleLeftArrow).toEqual('function');
-    expect(typeof tree.handleUpArrow).toEqual('function');
-    expect(typeof tree.handleDownArrow).toEqual('function');
   });
 
   describe('getState()', () => {
@@ -40,8 +36,8 @@ describe('createFocusTree()', () => {
     describe('setting root options', () => {
       it('returns the right initial state', () => {
         const tree = createFocusTree({
-          rootOrientation: 'vertical',
-          rootWrapping: true,
+          orientation: 'vertical',
+          wrapping: true,
         });
         const state = tree.getState();
         expect(state).toEqual({

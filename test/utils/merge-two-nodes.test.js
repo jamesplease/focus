@@ -1,4 +1,4 @@
-import mergeTwoNodes from '../../src/utils/merge-two-nodes';
+import mergeTwoNodes from '../../src/focus-tree/utils/merge-two-nodes';
 
 describe('mergeTwoNodes()', () => {
   describe('passing nothing', () => {

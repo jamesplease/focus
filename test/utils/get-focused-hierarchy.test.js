@@ -1,4 +1,4 @@
-import getFocusedHierarchy from '../../src/utils/get-focused-hierarchy';
+import getFocusedHierarchy from '../../src/focus-tree/utils/get-focused-hierarchy';
 
 describe('getFocusedHierarchy()', () => {
   it('returns an empty array when no nodes are passed', () => {

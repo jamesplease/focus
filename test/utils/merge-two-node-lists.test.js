@@ -1,4 +1,4 @@
-import mergeTwoNodeLists from '../../src/utils/merge-two-node-lists';
+import mergeTwoNodeLists from '../../src/focus-tree/utils/merge-two-node-lists';
 
 describe('mergeTwoNodeLists()', () => {
   describe('passing weird parameters', () => {
