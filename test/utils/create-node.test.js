@@ -1,24 +1,6 @@
 import createNode from '../../src/focus-tree/utils/create-node';
 
 describe('createNode()', () => {
-  // it('returns the same state when calling it with no nodeId', () => {
-  //   const currentState = {
-  //     focusHierarchy: ['root'],
-  //     focusedNodeId: 'root',
-  //     nodes: {
-  //       root: {
-  //         id: 'root',
-  //         parentId: null,
-
-  //         isFocused: true,
-  //         isFocusedExact: true,
-  //       },
-  //     },
-  //   };
-
-  //   expect(createNode(currentState)).toBe(currentState);
-  // });
-
   it('computes correctly when calling it with a valid nodeId, but nothing else', () => {
     const currentState = {
       focusHierarchy: ['root'],
