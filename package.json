@@ -1,7 +1,7 @@
 {
-  "name": "use-focus-path",
-  "version": "0.0.3",
-  "description": "A React Hook for managing focus in TV apps.",
+  "name": "@xdproto/focus",
+  "version": "0.0.4",
+  "description": "A React Component for managing focus in TV apps",
   "main": "src/index.js",
   "scripts": {
     "test": "npm run test:unit",
@@ -10,22 +10,25 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jamesplease/use-focus-path.git"
+    "url": "git+https://github.com/jamesplease/focus.git"
   },
   "keywords": [
     "lrud",
+    "react",
+    "component",
     "focus",
     "path",
     "tv",
     "remote",
-    "television"
+    "television",
+    "hooks"
   ],
   "author": "James Smith",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/jamesplease/use-focus-path/issues"
+    "url": "https://github.com/jamesplease/focus/issues"
   },
-  "homepage": "https://github.com/jamesplease/use-focus-path#readme",
+  "homepage": "https://github.com/jamesplease/focus#readme",
   "peerDependencies": {
     "react": "^16.8.0"
   },
