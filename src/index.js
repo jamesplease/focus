@@ -1,3 +1,3 @@
-export { default as FocusProvider } from './focus-provider';
-export { default as useFocusPath } from './use-focus-path';
-export { default as createFocusTree } from './create-focus-tree';
+export { default as FocusRoot } from './focus-root';
+export { default as Focusable } from './focusable';
+export { default as useFocus } from './use-focus';

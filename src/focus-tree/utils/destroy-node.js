@@ -53,9 +53,6 @@ export default function destroyNode(currentState, nodeId) {
     newParentChildren = null;
   } else {
     newParentChildren = parentChildren.filter(id => id !== nodeId);
-    // const nodeIndexInChildren = parentChildren.indexOf(nodeId);
-    // newParentChildren = [...parentChildren];
-    // newParentChildren.splice(nodeIndexInChildren, 1, ...ownChildren);
   }
 
   if (!recomputeFocus) {
@@ -82,11 +79,6 @@ export default function destroyNode(currentState, nodeId) {
     },
     newFocusId
   );
-
-  // const focusHierarchy = currentState.focusHierarchy.slice(
-  //   0,
-  //   currentState.focusHierarchy.indexOf(nodeId)
-  // );
 
   return {
     ...currentState,

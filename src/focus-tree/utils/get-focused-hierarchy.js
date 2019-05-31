@@ -1,22 +1,50 @@
-function getNodeAncestors(nodes, node = {}) {
+import clamp from './clamp';
+
+function getRecursiveParent(nodes, node) {
   let result = [];
 
   if (node.parentId) {
     const parentNode = nodes[node.parentId];
-    result = [node.parentId].concat(getNodeAncestors(nodes, parentNode));
+
+    result = [node.parentId].concat(getRecursiveParent(nodes, parentNode));
   }
+
+  return result;
+}
+
+function getNodeAncestors(nodes, node = {}) {
+  const result = getRecursiveParent(nodes, node);
 
   return result.reverse();
 }
 
 function getChildren(nodes, node = {}, orientation, preferEnd) {
-  const children = node.children;
+  const unfilteredChildren = node.children || [];
+
+  const children = unfilteredChildren.filter(nodeId => {
+    const node = nodes[nodeId];
+
+    if (node && node.disabled) {
+      return false;
+    }
+
+    return true;
+  });
+
   let results = [];
-  if (Array.isArray(children)) {
+  if (Array.isArray(children) && children.length) {
     const lastIndex = Math.max(0, children.length - 1);
 
     let indexToUse = 0;
-    if (orientation === node.orientation) {
+
+    if (
+      node.restoreActiveChildIndex &&
+      typeof node.previousActiveChildIndex === 'number'
+    ) {
+      indexToUse = node.previousActiveChildIndex;
+    } else if (typeof node.defaultChildFocusIndex === 'number') {
+      indexToUse = clamp(node.defaultChildFocusIndex, 0, lastIndex);
+    } else if (orientation === node.orientation) {
       indexToUse = preferEnd ? lastIndex : 0;
     }
 

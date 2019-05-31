@@ -4,5 +4,6 @@ export default {
   children: null,
   wrapping: false,
   onSelect: null,
+  onMove: null,
   orientation: 'horizontal',
 };

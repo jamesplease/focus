@@ -1,25 +1,27 @@
 import React, { useState, useEffect, useRef } from 'react';
 import FocusContext from './focus-context';
-import createFocusTree from './create-focus-tree';
-import focusLrud from './focus-lrud';
+import createFocusTree from './focus-tree/create-focus-tree';
+import focusLrud from './focus-lrud/focus-lrud';
 
 function getFocusState(focusTreeRef) {
   return {
     ...focusTreeRef.current.getState(),
+    focusTree: focusTreeRef.current,
     createNode: focusTreeRef.current.createNode,
+    updateNode: focusTreeRef.current.updateNode,
     destroyNode: focusTreeRef.current.destroyNode,
     setFocus: focusTreeRef.current.setFocus,
-    moveFocusForward: focusTreeRef.current.moveFocusForward,
-    moveFocusBackward: focusTreeRef.current.moveFocusBackward,
   };
 }
 
-export default function FocusProvider({ children }) {
+export default function FocusRoot({ children, orientation, wrapping }) {
   const focusTreeRef = useRef();
 
   if (!focusTreeRef.current) {
-    focusTreeRef.current = createFocusTree();
-    window.focusTree = focusTreeRef.current;
+    focusTreeRef.current = createFocusTree({
+      orientation,
+      wrapping,
+    });
   }
 
   const [focusState, setFocusState] = useState(() =>
@@ -31,9 +33,9 @@ export default function FocusProvider({ children }) {
     // we haven't subscribed, so our mirrored state is stale. We manually sync it.
     setFocusState(getFocusState(focusTreeRef));
 
-    // Now that we're manually synced, we can set up an automatic subscription to keep the state in order
+    // Now that we've manually synced the state, we can set up an automatic subscription to keep the state in order
     // going forward.
-    const unsubscibe = focusTreeRef.current.subscribe(() =>
+    const unsubscribe = focusTreeRef.current.subscribe(() =>
       setFocusState(getFocusState(focusTreeRef))
     );
 
@@ -41,7 +43,7 @@ export default function FocusProvider({ children }) {
     lrud.subscribe();
 
     return () => {
-      unsubscibe();
+      unsubscribe();
       lrud.unsubscribe();
     };
   }, []);

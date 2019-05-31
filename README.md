@@ -1,6 +1,6 @@
 # use-focus-path
 
-A [React](https://reactjs.org/) [Hook](https://reactjs.org/docs/hooks-intro.html) for managing focus in TV apps.
+A [React](https://reactjs.org/) Component for managing focus in TV apps.
 
 ## Motivation
 
@@ -9,10 +9,9 @@ is of particular importance.
 
 It is not always the case that your runtime environment includes a system for managing focus.
 Environments that do include such a system, like the browser, typically have support for a
-one dimensional navigation system (i.e.; <kbd>Tab</kbd> and <kbd>Shift + Tab</kbd>), rather than two dimensional
-navigation (LRUD).
+focus system that doesn't align with the needs of TVs.
 
-For these reasons, it is up to the app to manage its own focus state. This hook helps you to do that.
+Because of this, it is up to the app to manage its own focus state. This library helps you to do that.
 
 ## Installation
 
@@ -41,110 +40,131 @@ The [limitations](#limitations) described below may help you to determine that.
 
 ## Getting Started
 
-Configure the Provider somewhere high up in your application's component tree.
+Render the `FocusRoot` somewhere high up in your application's component tree. This is the root node of the focus tree.
 
 ```jsx
-import { FocusProvider } from 'use-focus-path';
+import { FocusRoot } from 'use-focus-path';
 
 export default function App() {
   return (
-    <FocusProvider>
+    <FocusRoot>
       <AppContents />
-    </FocusProvider>
+    </FocusRoot>
   );
 }
 ```
 
-Next, use the hook in your components.
+Next, use the Focusable component to create a focusable node on the page.
 
 ```jsx
-import { useFocusPath } from 'use-focus-path';
+import { Focusable } from 'use-focus-path';
 
 export default function Profile() {
-  const { isFocused } = useFocusPath('profile');
-
-  // ...use `isFocused`, or any of the other things returned by `useFocusPath`
-
-  return <div className="profile">Profile</div>;
+  return <Focusable className="profile">Profile</Focusable>;
 }
 ```
 
-To learn more about the different properties of the return value of the hook, refer to the API
-documentation below.
+This library manages moving focus between the Focusable nodes as the user inputs
+LRUD commands.
+
+Configuring this behavior is managed entirely through props of the Focusable components. To
+learn more about those props, refer to the API documentation below.
 
 ## API
 
-This library has two named exports: `FocusProvider` and `useFocusPath`.
+This library has three named exports: `FocusRoot`, `Focusable`, and `useFocus`.
 
-### `<FocusProvider />`
+### `<FocusRoot />`
 
-A [Context](https://reactjs.org/docs/context.html) Provider that you must place at the root of your application. The
-`FocusProvider` accepts no props.
+Serves as the root node of a new focus hierarchy.
+
+All props are optional.
+
+| Prop          | Type    | Default value | Description                                                                                             |
+| ------------- | ------- | ------------- | ------------------------------------------------------------------------------------------------------- |
+| `orientation` | string  | 'horizontal'  | Whether the children of the root node are arranged horizontally or vertically.                          |
+| `wrapping`    | boolean | 'false'       | Set to `true` for the navigation to wrap when the user reaches the start or end of the root's children. |
 
 ```jsx
-import { FocusProvider } from 'use-focus-path';
+import { FocusRoot } from 'use-focus-path';
 
 export default function App() {
   return (
-    <FocusProvider>
+    <FocusRoot orientation="vertical">
       <AppContents />
-    </FocusProvider>
+    </FocusRoot>
   );
 }
 ```
 
-### `useFocusPath( targetFocusPath [, options] )`
+### `useFocus()`
 
-A [Hook](https://reactjs.org/docs/hooks-intro.html) that returns information about whether or not `targetFocusPath` is focused, as well as
-functions to update the focus path.
+A [Hook](https://reactjs.org/docs/hooks-intro.html) that returns utilities for working with focus.
 
-| Arguments         | Type   | Default value | Description                                              |
-| ----------------- | ------ | ------------- | -------------------------------------------------------- |
-| `targetFocusPath` | string | `""`          | The focus path you are interested in knowing more about. |
-| `options`         | object |               | Additional options; see below.                           |
+```js
+import { useFocus } from 'use-focus-path';
 
-All of the following options are optional.
-
-| Option         | Type     | Default value | Description                                                                                                     |
-| -------------- | -------- | ------------- | --------------------------------------------------------------------------------------------------------------- |
-| `focusOnMount` | boolean  | `false`       | Whether or not to focus this node when the component mounts.                                                    |
-| `parentId`     | string   |               | The ID of the parent of this focusable node.                                                                    |
-| `orientation`  | string   | 'horizontal'  | Whether the children of this node are arranged horizontally or vertically.                                      |
-| `wrapping`     | boolean  | 'false'       | Set to `true` for the navigation to wrap when the user reaches the start or end of the children list.           |
-| `children`     | array    |               | Specify children. Not necessary if the children specify `parentId.`                                             |
-| `onSelect`     | function |               | A function called whenever the user selects when this node is focused. Receives the node as the first argument. |
-
-The return value of the hook has the following properties:
-
-| Arguments           | Type           | Description                                                                       |
-| ------------------- | -------------- | --------------------------------------------------------------------------------- |
-| `isFocused`         | boolean        | `true` when the `targetFocusPath`, or a child path, is focused.                   |
-| `isFocusedExact`    | boolean        | `true` when the `targetFocusPath` is focused exactly.                             |
-| `child`             | string\|number | The direct child of `targetFocusPath`. Will be a number if the child is a number. |
-| `focusPath`         | string         | The full focus path.                                                              |
-| `setFocusPath`      | function       | Set a new focus path.                                                             |
-| `setFocusedChild`   | function       | Update the focused child of `targetFocusPath`.                                    |
-| `setFocusedSibling` | function       | Update the focus path with a sibling of `targetFocusPath`.                        |
-
-```jsx
-import { useFocusPath } from 'use-focus-path';
-
-export default function Profile() {
-  const { isFocused } = useFocusPath('profile', {
-    onSelect({ isFocused, isFocusedExact }) {
-      console.log(
-        'The user just press the select button!',
-        isFocused,
-        isFocusedExact
-      );
-    },
-  });
+export default function MyComponent() {
+  const { setFocus, isFocused } = useFocus();
 
   useEffect(() => {
-    console.log('The focus state changed', isFocused);
-  }, [isFocused]);
+    if (!isFocused('settings')) {
+      setFocus('settings');
+    }
+  }, []);
+}
+```
 
-  return <div className="profile">Profile</div>;
+The properties of the object returned from the hook are:
+
+| Property                    | Type     | Description                                     |
+| --------------------------- | -------- | ----------------------------------------------- |
+| `isFocused( focusId )`      | function | Returns `true` if `focusId` is focused.         |
+| `isFocusedExact( focusId )` | function | Returns `true` if `focusId` is exactly focused. |
+| `setFocus( focusId )`       | function | Move focus to `focusId`.                        |
+
+### `<Focusable />`
+
+A [Component](https://reactjs.org/docs/react-component.html) that creates a focusable node in the focus tree.
+
+All props are optional.
+
+| Prop                     | Type     | Default value    | Description                                                                                                                               |
+| ------------------------ | -------- | ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| `className`              | string   |                  | A class name to apply to this element.                                                                                                    |
+| `focusedClass`           | string   | "isFocused"      | A class name that is applied when this element is focused.                                                                                |
+| `focusedExactClass`      | string   | "isFocusedExact" | A class name that is applied this element is exactly focused.                                                                             |
+| `nodeType`               | string   | 'div'            | The element to render. For leaf nodes, you will likely want to use `"button"`.                                                            |
+| `focusId`                | string   | `{unique_id}`    | A unique identifier for this node. Specify this yourself for debugging purposes, or when you will need to manually set focus to the node. |
+| `focusOnMount`           | boolean  | `false`          | Whether or not to focus this node when the component mounts.                                                                              |
+| `orientation`            | string   | 'horizontal'     | Whether the children of this node are arranged horizontally or vertically.                                                                |
+| `wrapping`               | boolean  | 'false'          | Set to `true` for the navigation to wrap when the user reaches the start or end of the children list.                                     |
+| `defaultChildFocusIndex` | number   | 0                | The index of the child to move focus to when this element receives focused. Only applies for nodes with children.                         |
+| `onKey`                  | function |                  | A function that is called when the user presses any TV remote key while this element has focus.                                           |
+| `onArrow`                | function |                  | A function that is called when the user presses a directional button.                                                                     |
+| `onLeft`                 | function |                  | A function that is called when the user presses the left button.                                                                          |
+| `onUp`                   | function |                  | A function that is called when the user presses the up button.                                                                            |
+| `onDown`                 | function |                  | A function that is called when the user presses the down button.                                                                          |
+| `onRight`                | function |                  | A function that is called when the user presses the right button.                                                                         |
+| `onSelect`               | function |                  | A function that is called when the user pressed the select button.                                                                        |
+| `onBack`                 | function |                  | A function that is called when the user presses the back button.                                                                          |
+| `onMove`                 | function |                  | A function that is called when the focused child index of this node changes. Only called for nodes with children.                         |
+| `...rest`                | any      |                  | All other props are applied to the underlying DOM node.                                                                                   |
+
+```jsx
+import { Focusable } from 'use-focus-path';
+
+export default function Profile() {
+  return (
+    <Focusable
+      nodeType="button"
+      className="profileBtn"
+      onSelect={({ node }) => {
+        console.log('The user just selected this profile', node);
+      }}>
+      Profile
+    </Focusable>
+  );
 }
 ```
 
@@ -157,4 +177,4 @@ export default function Profile() {
 ## Limitations
 
 - No support for pointer (mouse) inputs
-- No spatial navigation; complex transitions must be manually managed
+- No spatial navigation

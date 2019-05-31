@@ -25,6 +25,7 @@ export default function getNodesFromFocusChange(
       result[nodeId] = {
         isFocused: false,
         isFocusedExact: false,
+        previousActiveChildIndex: nodes[nodeId].activeChildIndex,
         activeChildIndex: null,
       };
     }
@@ -41,9 +42,9 @@ export default function getNodesFromFocusChange(
     }
 
     let activeChildIndex = null;
+    const thisNode = nodes[nodeId] || defaultNode;
     if (!isLeaf) {
       const nextNodeId = focusHierarchy[index + 1];
-      const thisNode = nodes[nodeId] || defaultNode;
       const children = thisNode.children;
 
       activeChildIndex = Array.isArray(children)
@@ -54,6 +55,7 @@ export default function getNodesFromFocusChange(
     updatedNodes[nodeId] = {
       isFocused: true,
       isFocusedExact: isLeaf,
+      previousActiveChildIndex: thisNode.activeChildIndex,
       activeChildIndex,
     };
   });

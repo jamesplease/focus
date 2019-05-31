@@ -15,7 +15,18 @@ export default function findTargetNode(nodes, node, orientation, direction) {
     if (parentNode.wrapping) {
       return node;
     } else {
-      const parentsChildren = parentNode.children || [];
+      const unfilteredChildren = parentNode.children || [];
+
+      const parentsChildren = unfilteredChildren.filter(nodeId => {
+        const node = nodes[nodeId];
+
+        if (node && node.disabled) {
+          return false;
+        }
+
+        return true;
+      });
+
       const index = parentsChildren.indexOf(nodeId);
 
       if (direction === 'forward' && index === parentsChildren.length - 1) {

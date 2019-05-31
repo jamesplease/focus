@@ -3,14 +3,12 @@ import findTargetNode from './utils/find-target-node';
 import getUnfocusedNodes from './utils/reset-focused-nodes';
 import getNodesFromFocusChange from './utils/get-nodes-from-focus-change';
 import defaultNode from './utils/default-node';
-import mergeTwoNodes from './utils/merge-two-nodes';
-import mergeTwoNodeLists from './utils/merge-two-node-lists';
 import createNodeUtil from './utils/create-node';
 import destroyNodeUtil from './utils/destroy-node';
 
 export default function createFocusTree({
-  rootOrientation = 'horizontal',
-  rootWrapping = false,
+  orientation = 'horizontal',
+  wrapping = false,
 } = {}) {
   let currentState = {
     focusedNodeId: 'root',
@@ -21,8 +19,8 @@ export default function createFocusTree({
         parentId: null,
         isFocused: true,
         isFocusedExact: true,
-        orientation: rootOrientation,
-        wrapping: rootWrapping,
+        orientation,
+        wrapping,
       },
     },
   };
@@ -118,6 +116,7 @@ export default function createFocusTree({
       arrow === 'down' || arrow === 'right' ? 'forward' : 'backward';
 
     const focusedNode = currentState.nodes[currentState.focusedNodeId];
+
     const targetNode = findTargetNode(
       currentState.nodes,
       focusedNode,
@@ -147,30 +146,66 @@ export default function createFocusTree({
       );
 
       const newFocusedId = parentsChildren[newIndex];
+
+      const newFocusedNode = currentState.nodes[newFocusedId];
+
+      // Disabled nodes cannot receive focus
+      // TODO: skip over the disabled node and find the first one node
+      // that is not disabled.
+      // NOTE: currently not actually in use
+      if (newFocusedNode.disabled) {
+        return;
+      }
+
+      const currentActiveIndex = parentNode.activeChildIndex;
+      const currentActiveNodeId = parentNode.children[currentActiveIndex];
+      const currentActiveNode = currentState.nodes[currentActiveNodeId];
+
       setFocus(newFocusedId, orientation, preferEnd);
+
+      const newActiveIndex = currentState.nodes[parentId].activeChildIndex;
+      const newActiveNodeId =
+        currentState.nodes[parentId].children[newActiveIndex];
+      const newActiveNode = currentState.nodes[newActiveNodeId];
+
+      if (typeof parentNode.onMove === 'function') {
+        parentNode.onMove({
+          orientation,
+          direction,
+          arrow,
+          node: parentNode,
+          prevChildIndex: parentNode.activeChildIndex,
+          nextChildIndex: newActiveIndex,
+          prevChildNode: currentActiveNode,
+          nextChildNode: newActiveNode,
+        });
+      }
     }
-  }
-
-  function handleRightArrow() {
-    handleArrow('right');
-  }
-
-  function handleLeftArrow() {
-    handleArrow('left');
-  }
-
-  function handleUpArrow() {
-    handleArrow('up');
-  }
-
-  function handleDownArrow() {
-    handleArrow('down');
   }
 
   function createNode(nodeId, opts) {
     const newState = createNodeUtil(currentState, nodeId, opts);
     currentState = newState;
     onUpdate();
+  }
+
+  // Silently updates a node. Doesn't require a rerender as this only
+  // affects changes to the node.
+  function updateNode(nodeId, opts) {
+    const currentNode = currentState.nodes[nodeId];
+
+    const newState = {
+      ...currentState,
+      nodes: {
+        ...currentState.nodes,
+        [nodeId]: {
+          ...currentNode,
+          ...opts,
+        },
+      },
+    };
+
+    currentState = newState;
   }
 
   function destroyNode(nodeId) {
@@ -183,11 +218,9 @@ export default function createFocusTree({
     subscribe,
     getState,
     createNode,
+    updateNode,
     destroyNode,
     setFocus,
-    handleRightArrow,
-    handleLeftArrow,
-    handleUpArrow,
-    handleDownArrow,
+    handleArrow,
   };
 }

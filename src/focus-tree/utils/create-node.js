@@ -10,9 +10,19 @@ const defaultNode = {
 
   children: null,
   activeChildIndex: null,
+  restoreActiveChildIndex: false,
+
+  disabled: false,
 
   wrapping: false,
   onSelect: null,
+  onKey: null,
+  onMove: null,
+  onLeft: null,
+  onUp: null,
+  onRight: null,
+  onArrow: null,
+  onDown: null,
   orientation: 'horizontal',
 };
 
@@ -26,14 +36,23 @@ export default function createNode(
     parentId = 'root',
     wrapping,
     orientation,
-    children,
+    defaultChildFocusIndex,
+    restoreActiveChildIndex,
+
+    disabled,
+
+    onKey,
+    onArrow,
+    onLeft,
+    onRight,
+    onUp,
+    onDown,
     onSelect,
+    onBack,
+
+    onMove,
   } = {}
 ) {
-  if (nodeId === 'root' || typeof nodeId !== 'string') {
-    return currentState;
-  }
-
   const existingNode = currentState.nodes[nodeId];
   const mergedNode = {
     ...defaultNode,
@@ -50,12 +69,48 @@ export default function createNode(
     mergedNode.orientation = orientation;
   }
 
-  if (typeof children !== 'undefined') {
-    mergedNode.children = children;
-  }
-
   if (typeof onSelect !== 'undefined') {
     mergedNode.onSelect = onSelect;
+  }
+
+  if (typeof onKey !== 'undefined') {
+    mergedNode.onKey = onKey;
+  }
+
+  if (typeof onArrow !== 'undefined') {
+    mergedNode.onArrow = onArrow;
+  }
+
+  if (typeof onUp !== 'undefined') {
+    mergedNode.onUp = onUp;
+  }
+
+  if (typeof onDown !== 'undefined') {
+    mergedNode.onDown = onDown;
+  }
+
+  if (typeof onRight !== 'undefined') {
+    mergedNode.onRight = onRight;
+  }
+
+  if (typeof onLeft !== 'undefined') {
+    mergedNode.onLeft = onLeft;
+  }
+
+  if (typeof onMove !== 'undefined') {
+    mergedNode.onMove = onMove;
+  }
+
+  if (typeof defaultChildFocusIndex === 'number') {
+    mergedNode.defaultChildFocusIndex = defaultChildFocusIndex;
+  }
+
+  if (typeof restoreActiveChildIndex === 'boolean') {
+    mergedNode.restoreActiveChildIndex = restoreActiveChildIndex;
+  }
+
+  if (typeof disabled === 'boolean') {
+    mergedNode.disabled = disabled;
   }
 
   // We start off the new nodes by adding our new ID.
@@ -64,16 +119,6 @@ export default function createNode(
     ...currentState.nodes,
     [nodeId]: mergedNode,
   };
-
-  if (Array.isArray(children)) {
-    children.forEach(childId => {
-      newNodes[childId] = {
-        ...defaultNode,
-        id: childId,
-        parentId: nodeId,
-      };
-    });
-  }
 
   const parentExists = Boolean(currentState.nodes[parentId]);
 
@@ -86,9 +131,15 @@ export default function createNode(
   const parentNode = currentState.nodes[parentId];
   const parentChildren = parentNode.children;
 
-  const newParentChildren = Array.isArray(parentChildren)
+  let newParentChildren;
+
+  // if (disabled) {
+  //   newParentChildren = parentChildren;
+  // } else {
+  newParentChildren = Array.isArray(parentChildren)
     ? parentChildren.concat(nodeId)
     : [nodeId];
+  // }
 
   newNodes[parentId] = mergeTwoNodes(parentNode, {
     children: newParentChildren,
