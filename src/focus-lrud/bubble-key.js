@@ -30,7 +30,7 @@ export default function bubbleKey(focusTree, key) {
     propagationStopped = true;
   }
 
-  focusHierarchy.reverse().forEach((focusedNodeId, index) => {
+  [...focusHierarchy].reverse().forEach((focusedNodeId, index) => {
     if (propagationStopped) {
       return;
     }

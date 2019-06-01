@@ -1,6 +1,6 @@
-# use-focus-path
+# focus
 
-A [React](https://reactjs.org/) Component for managing focus in TV apps.
+A [React](https://reactjs.org/) library for managing focus in TV apps.
 
 ## Motivation
 
@@ -18,13 +18,13 @@ Because of this, it is up to the app to manage its own focus state. This library
 Install using [npm](https://www.npmjs.com):
 
 ```
-npm install use-focus-path
+npm install @xdproto/focus
 ```
 
 or [yarn](https://yarnpkg.com/):
 
 ```
-yarn add use-focus-path
+yarn add @xdproto/focus
 ```
 
 ## Guides
@@ -125,7 +125,7 @@ The properties of the object returned from the hook are:
 
 ### `<Focusable />`
 
-A [Component](https://reactjs.org/docs/react-component.html) that creates a focusable node in the focus tree.
+A [Component](https://reactjs.org/docs/react-component.html) that represents a focusable node in the focus tree.
 
 All props are optional.
 
