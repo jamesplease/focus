@@ -7,7 +7,6 @@ export default function setFocus({
   nodeId,
   orientation,
   preferEnd,
-  clearFocus = false,
 }) {
   const {
     nodes: nodeUpdates,
@@ -16,10 +15,7 @@ export default function setFocus({
   } = getNodesFromFocusChange(currentState, nodeId, orientation, preferEnd);
 
   const updatedNodes = {};
-
-  const currentNodes = clearFocus
-    ? getUnfocusedNodes(currentState.nodes)
-    : currentState.nodes;
+  const currentNodes = getUnfocusedNodes(currentState.nodes);
 
   for (let nodeId in nodeUpdates) {
     const update = nodeUpdates[nodeId];

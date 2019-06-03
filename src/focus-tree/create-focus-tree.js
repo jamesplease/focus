@@ -56,7 +56,6 @@ export default function createFocusTree({
       nodeId,
       orientation,
       preferEnd,
-      clearFocus: true,
     });
 
     currentState = newState;
@@ -80,22 +79,42 @@ export default function createFocusTree({
 
   // Silently updates a node. This generally doesn't require a rerender as this only
   // affects changes to the node, and not the focus tree.
-  // Exceptions are when `disabled` is changed, but atm dynamic disabling isn't supported.
+  // The exception is when the node is focused, in which case a new focus state is calculated.
   function updateNode(nodeId, opts) {
     const currentNode = currentState.nodes[nodeId];
+
+    let wasFocused = currentNode.isFocused;
+
+    const newNode = {
+      ...currentNode,
+      ...opts,
+    };
 
     const newState = {
       ...currentState,
       nodes: {
         ...currentState.nodes,
-        [nodeId]: {
-          ...currentNode,
-          ...opts,
-        },
+        [nodeId]: newNode,
       },
     };
 
-    currentState = newState;
+    if (!wasFocused) {
+      currentState = newState;
+    } else {
+      // Recompute the focus using the parent
+      const parentId = newNode.parentId;
+      const parentNode = newState.nodes[parentId];
+
+      const nextState = setFocusUtil({
+        currentState: newState,
+        nodeId: parentId,
+        orientation: parentNode.orientation,
+        preferEnd: false,
+      });
+
+      currentState = nextState;
+      onUpdate();
+    }
   }
 
   function destroyNode(nodeId) {
