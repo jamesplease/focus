@@ -1,6 +1,11 @@
 # Changelog
 
-### v0.0.4 (2019/5/8)
+### v0.0.5 (2019/6/3)
+
+- The `disable` prop can now be updated dynamically.
+- Introduces `disabledClass` prop and associated disabled class name.
+
+### v0.0.4 (2019/5/31)
 
 - Publish to npm under new package name.
 
