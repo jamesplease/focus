@@ -1,30 +1,54 @@
 {
-  "name": "use-focus-path",
-  "version": "0.0.3",
-  "description": "A React Hook for managing focus in TV apps.",
+  "name": "@xdproto/focus",
+  "version": "0.0.4",
+  "description": "A React library for managing focus in TV apps",
   "main": "src/index.js",
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "npm run test:unit",
+    "test:unit": "jest",
+    "test:watch": "jest --watch"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jamesplease/use-focus-path.git"
+    "url": "git+https://github.com/jamesplease/focus.git"
   },
   "keywords": [
     "lrud",
+    "react",
+    "component",
     "focus",
     "path",
     "tv",
     "remote",
-    "television"
+    "television",
+    "hooks"
   ],
   "author": "James Smith",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/jamesplease/use-focus-path/issues"
+    "url": "https://github.com/jamesplease/focus/issues"
   },
-  "homepage": "https://github.com/jamesplease/use-focus-path#readme",
+  "homepage": "https://github.com/jamesplease/focus#readme",
   "peerDependencies": {
     "react": "^16.8.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.4.4",
+    "@babel/preset-env": "^7.4.4",
+    "@babel/preset-react": "^7.0.0",
+    "babel-jest": "^24.8.0",
+    "eslint": "^5.16.0",
+    "eslint-plugin-react": "^7.13.0",
+    "eslint-plugin-react-hooks": "^1.6.0",
+    "jest": "^24.8.0",
+    "react": "^16.8.6",
+    "react-hooks-testing-library": "^0.5.0",
+    "react-test-renderer": "^16.8.6"
+  },
+  "dependencies": {
+    "prop-types": "^15.7.2"
   }
 }
