@@ -1,10 +1,7 @@
-import getIndex from './utils/get-index';
-import findTargetNode from './utils/find-target-node';
-import getUnfocusedNodes from './utils/reset-focused-nodes';
-import getNodesFromFocusChange from './utils/get-nodes-from-focus-change';
-import defaultNode from './utils/default-node';
+import handleArrowUtil from './utils/handle-arrow';
 import createNodeUtil from './utils/create-node';
 import destroyNodeUtil from './utils/destroy-node';
+import setFocusUtil from './utils/set-focus';
 
 export default function createFocusTree({
   orientation = 'horizontal',
@@ -53,61 +50,13 @@ export default function createFocusTree({
     return currentState;
   }
 
-  function updateNodes(nodeUpdates, { clearFocus = false, focusedNodeId }) {
-    const {
-      nodes: nodeUpdates,
-      focusHierarchy,
-      focusedNodeId,
-    } = getNodesFromFocusChange(currentState, nodeId, orientation, preferEnd);
-
-    const updatedNodes = {};
-
-    const currentNodes = clearFocus
-      ? getUnfocusedNodes(currentState.nodes)
-      : currentState.nodes;
-
-    for (let nodeId in nodeUpdates) {
-      const update = nodeUpdates[nodeId];
-      const currentNode = currentNodes[nodeId];
-
-      updatedNodes[nodeId] = {
-        ...defaultNode,
-        ...currentNode,
-        ...update,
-      };
-    }
-
-    let newState = {
-      ...currentState,
-      nodes: {
-        ...currentNodes,
-        ...updatedNodes,
-      },
-    };
-
-    if (typeof focusedNodeId === 'string') {
-      newState.focusedNodeId = focusedNodeId;
-    }
-
-    if (Array.isArray(focusHierarchy)) {
-      newState.focusHierarchy = focusHierarchy;
-    }
-
-    return newState;
-  }
-
   function setFocus(nodeId, orientation, preferEnd) {
-    // const { nodes, focusHierarchy, focusedNodeId } = getNodesFromFocusChange(
-    //   currentState,
-    //   nodeId,
-    //   orientation,
-    //   preferEnd
-    // );
-
-    const newState = updateNodes(nodes, {
+    const newState = setFocusUtil({
+      currentState,
+      nodeId,
+      orientation,
+      preferEnd,
       clearFocus: true,
-      focusHierarchy,
-      focusedNodeId,
     });
 
     currentState = newState;
@@ -115,89 +64,11 @@ export default function createFocusTree({
   }
 
   function handleArrow(arrow) {
-    const orientation =
-      arrow === 'right' || arrow === 'left' ? 'horizontal' : 'vertical';
-    const direction =
-      arrow === 'down' || arrow === 'right' ? 'forward' : 'backward';
-
-    const focusedNode = currentState.nodes[currentState.focusedNodeId];
-
-    // The target node is the node whose parent will handle the event.
-    // For instance, if you press the Up key, the first ancestor node
-    // that is a child of a vertically oriented list will be the target.
-    const targetNode = findTargetNode(
-      currentState.nodes,
-      focusedNode,
-      orientation,
-      direction
-    );
-
-    if (targetNode) {
-      const parentId = targetNode.parentId;
-      let parentNode = {};
-      if (typeof parentId === 'string') {
-        parentNode = currentState.nodes[parentId];
-      }
-
-      const distance = direction === 'forward' ? 1 : -1;
-      const wrapping = parentNode.wrapping;
-      const preferEnd = direction === 'forward' ? false : true;
-
-      const targetNodeId = targetNode.id;
-
-      const allParentsChildren = parentNode.children || [];
-
-      const parentsChildren = allParentsChildren.filter(nodeId => {
-        const node = nodes[nodeId];
-
-        if (node && node.disabled) {
-          return false;
-        }
-
-        return true;
-      });
-
-      const index = parentsChildren.indexOf(targetNodeId);
-
-      const newIndex = getIndex(
-        parentsChildren.length,
-        index + distance,
-        wrapping
-      );
-
-      const newFocusedId = parentsChildren[newIndex];
-
-      const newFocusedNode = currentState.nodes[newFocusedId];
-
-      // Disabled nodes cannot receive focus
-      if (newFocusedNode.disabled) {
-        return;
-      }
-
-      const currentActiveIndex = parentNode.activeChildIndex;
-      const currentActiveNodeId = parentNode.children[currentActiveIndex];
-      const currentActiveNode = currentState.nodes[currentActiveNodeId];
-
-      setFocus(newFocusedId, orientation, preferEnd);
-
-      const newActiveIndex = currentState.nodes[parentId].activeChildIndex;
-      const newActiveNodeId =
-        currentState.nodes[parentId].children[newActiveIndex];
-      const newActiveNode = currentState.nodes[newActiveNodeId];
-
-      if (typeof parentNode.onMove === 'function') {
-        parentNode.onMove({
-          orientation,
-          direction,
-          arrow,
-          node: parentNode,
-          prevChildIndex: parentNode.activeChildIndex,
-          nextChildIndex: newActiveIndex,
-          prevChildNode: currentActiveNode,
-          nextChildNode: newActiveNode,
-        });
-      }
-    }
+    handleArrowUtil({
+      arrow,
+      currentState,
+      setFocus,
+    });
   }
 
   function createNode(nodeId, opts) {
@@ -207,8 +78,9 @@ export default function createFocusTree({
     onUpdate();
   }
 
-  // Silently updates a node. Doesn't require a rerender as this only
-  // affects changes to the node.
+  // Silently updates a node. This generally doesn't require a rerender as this only
+  // affects changes to the node, and not the focus tree.
+  // Exceptions are when `disabled` is changed, but atm dynamic disabling isn't supported.
   function updateNode(nodeId, opts) {
     const currentNode = currentState.nodes[nodeId];
 
