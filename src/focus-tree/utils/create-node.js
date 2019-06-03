@@ -101,6 +101,10 @@ export default function createNode(
     mergedNode.onMove = onMove;
   }
 
+  if (typeof onBack !== 'undefined') {
+    mergedNode.onBack = onBack;
+  }
+
   if (typeof defaultChildFocusIndex === 'number') {
     mergedNode.defaultChildFocusIndex = defaultChildFocusIndex;
   }
