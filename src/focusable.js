@@ -17,6 +17,7 @@ export function Focusable(
     className = '',
     focusedClass = 'isFocused',
     focusedExactClass = 'isFocusedExact',
+    disabledClass = 'focusDisabled',
 
     nodeType = 'div',
     children,
@@ -125,6 +126,7 @@ export function Focusable(
     isFocused: false,
     isFocusedExact: false,
     children: null,
+    disabled: false,
     activeChildIndex: null,
   };
 
@@ -141,7 +143,7 @@ export function Focusable(
 
   const classString = `${className} ${isFocused ? focusedClass : ''} ${
     isFocusedExact ? focusedExactClass : ''
-  }`;
+  } ${disabled ? disabledClass : ''}`;
 
   return createElement(
     FocusContext.Provider,
@@ -167,6 +169,7 @@ ForwardedFocusable.propTypes = {
   className: PropTypes.string,
   focusedClass: PropTypes.string,
   focusedExactClass: PropTypes.string,
+  disabledClass: PropTypes.string,
 
   nodeType: PropTypes.string,
   children: PropTypes.oneOfType([

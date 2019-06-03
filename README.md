@@ -134,6 +134,7 @@ All props are optional.
 | `className`              | string   |                  | A class name to apply to this element.                                                                                                    |
 | `focusedClass`           | string   | "isFocused"      | A class name that is applied when this element is focused.                                                                                |
 | `focusedExactClass`      | string   | "isFocusedExact" | A class name that is applied this element is exactly focused.                                                                             |
+| `disabledClass`          | string   | "focusDisabled"  | A class name that is applied this element is disabled.                                                                                    |
 | `nodeType`               | string   | 'div'            | The element to render. For leaf nodes, you will likely want to use `"button"`.                                                            |
 | `focusId`                | string   | `{unique_id}`    | A unique identifier for this node. Specify this yourself for debugging purposes, or when you will need to manually set focus to the node. |
 | `focusOnMount`           | boolean  | `false`          | Whether or not to focus this node when the component mounts.                                                                              |
