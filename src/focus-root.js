@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import PropTypes from 'prop-types';
 import FocusContext from './focus-context';
 import createFocusTree from './focus-tree/create-focus-tree';
 import focusLrud from './focus-lrud/focus-lrud';
@@ -54,3 +55,12 @@ export default function FocusRoot({ children, orientation, wrapping }) {
     children
   );
 }
+
+FocusRoot.propTypes = {
+  orientation: PropTypes.oneOf(['horizontal', 'vertical']),
+  wrapping: PropTypes.bool,
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node,
+  ]),
+};

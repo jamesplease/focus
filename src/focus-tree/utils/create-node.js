@@ -124,6 +124,7 @@ export default function createNode(
 
   if (!parentExists) {
     // TODO: warn here
+    // eslint-disable-next-line no-console
     console.warn('ERROR!');
     return currentState;
   }

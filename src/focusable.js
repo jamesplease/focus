@@ -7,6 +7,7 @@ import {
   useEffect,
   useImperativeHandle,
 } from 'react';
+import PropTypes from 'prop-types';
 import FocusContext from './focus-context';
 
 let uniqueValue = 0;
@@ -160,4 +161,36 @@ export function Focusable(
   );
 }
 
-export default forwardRef(Focusable);
+const ForwardedFocusable = forwardRef(Focusable);
+
+ForwardedFocusable.propTypes = {
+  className: PropTypes.string,
+  focusedClass: PropTypes.string,
+  focusedExactClass: PropTypes.string,
+
+  nodeType: PropTypes.string,
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node,
+  ]),
+
+  focusId: PropTypes.string,
+  focusOnMount: PropTypes.bool,
+  wrapping: PropTypes.bool,
+  orientation: PropTypes.oneOf(['horizontal', 'vertical']),
+  defaultChildFocusIndex: PropTypes.number,
+  restoreActiveChildIndex: PropTypes.bool,
+  disabled: PropTypes.bool,
+
+  onKey: PropTypes.func,
+  onArrow: PropTypes.func,
+  onLeft: PropTypes.func,
+  onRight: PropTypes.func,
+  onUp: PropTypes.func,
+  onDown: PropTypes.func,
+  onSelect: PropTypes.func,
+  onBack: PropTypes.func,
+  onMove: PropTypes.func,
+};
+
+export default ForwardedFocusable;
