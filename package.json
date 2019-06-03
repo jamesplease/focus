@@ -1,6 +1,6 @@
 {
   "name": "@xdproto/focus",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "A React library for managing focus in TV apps",
   "main": "src/index.js",
   "publishConfig": {
