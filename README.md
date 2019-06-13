@@ -1,6 +1,9 @@
-# focus
+# Focus
 
 A [React](https://reactjs.org/) library for managing focus in TV apps.
+
+✓ Manages LRUD navigation for you  
+✓ Declarative API
 
 ## Motivation
 
@@ -27,23 +30,30 @@ or [yarn](https://yarnpkg.com/):
 yarn add @xdproto/focus
 ```
 
+This library has the following peer dependencies:
+
+- `react@^16.8.0`
+
+## Table of Contents
+
+- [Guides](#guides)
+  - [Getting started](#getting-started)
+  - [FAQ](#faq)
+- [API](#api)
+  - [\<FocusRoot/\>](#focusroot-)
+  - [\<Focusable/\>](#focusable-)
+  - [useFocus()](#usefocus)
+- [Prior Art](#prior-art)
+- [Limitations](#limitations)
+
 ## Guides
 
-### What is LRUD?
-
-LRUD is an acronym that stands for left-right-up-down, and it refers to the directional buttons typically found on remotes. In LRUD systems,
-input devices usually also have some kind of "submit" button, and, less commonly, a back button.
-
-### Is this library right for me?
-
-The [limitations](#limitations) described below may help you to determine that.
-
-## Getting Started
+### Getting Started
 
 Render the `FocusRoot` somewhere high up in your application's component tree. This is the root node of the focus tree.
 
 ```jsx
-import { FocusRoot } from 'use-focus-path';
+import { FocusRoot } from '@xdproto/focus';
 
 export default function App() {
   return (
@@ -57,7 +67,7 @@ export default function App() {
 Next, use the Focusable component to create a focusable node on the page.
 
 ```jsx
-import { Focusable } from 'use-focus-path';
+import { Focusable } from '@xdproto/focus';
 
 export default function Profile() {
   return <Focusable className="profile">Profile</Focusable>;
@@ -69,6 +79,17 @@ LRUD commands.
 
 Configuring this behavior is managed entirely through props of the Focusable components. To
 learn more about those props, refer to the API documentation below.
+
+### FAQ
+
+#### What is LRUD?
+
+LRUD is an acronym that stands for left-right-up-down, and it refers to the directional buttons typically found on remotes. In LRUD systems,
+input devices usually also have some kind of "submit" button, and, less commonly, a back button.
+
+#### Is this library right for me?
+
+The [limitations](#limitations) described below may help you to determine that.
 
 ## API
 
@@ -86,7 +107,7 @@ All props are optional.
 | `wrapping`    | boolean | 'false'       | Set to `true` for the navigation to wrap when the user reaches the start or end of the root's children. |
 
 ```jsx
-import { FocusRoot } from 'use-focus-path';
+import { FocusRoot } from '@xdproto/focus';
 
 export default function App() {
   return (
@@ -96,32 +117,6 @@ export default function App() {
   );
 }
 ```
-
-### `useFocus()`
-
-A [Hook](https://reactjs.org/docs/hooks-intro.html) that returns utilities for working with focus.
-
-```js
-import { useFocus } from 'use-focus-path';
-
-export default function MyComponent() {
-  const { setFocus, isFocused } = useFocus();
-
-  useEffect(() => {
-    if (!isFocused('settings')) {
-      setFocus('settings');
-    }
-  }, []);
-}
-```
-
-The properties of the object returned from the hook are:
-
-| Property                    | Type     | Description                                     |
-| --------------------------- | -------- | ----------------------------------------------- |
-| `isFocused( focusId )`      | function | Returns `true` if `focusId` is focused.         |
-| `isFocusedExact( focusId )` | function | Returns `true` if `focusId` is exactly focused. |
-| `setFocus( focusId )`       | function | Move focus to `focusId`.                        |
 
 ### `<Focusable />`
 
@@ -154,7 +149,7 @@ All props are optional.
 | `...rest`                | any      |                  | All other props are applied to the underlying DOM node.                                                                                   |
 
 ```jsx
-import { Focusable } from 'use-focus-path';
+import { Focusable } from '@xdproto/focus';
 
 export default function Profile() {
   return (
@@ -169,6 +164,32 @@ export default function Profile() {
   );
 }
 ```
+
+### `useFocus()`
+
+A [Hook](https://reactjs.org/docs/hooks-intro.html) that returns utilities for working with focus.
+
+```js
+import { useFocus } from '@xdproto/focus';
+
+export default function MyComponent() {
+  const { setFocus, isFocused } = useFocus();
+
+  useEffect(() => {
+    if (!isFocused('settings')) {
+      setFocus('settings');
+    }
+  }, []);
+}
+```
+
+The properties of the object returned from the hook are:
+
+| Property                    | Type     | Description                                     |
+| --------------------------- | -------- | ----------------------------------------------- |
+| `isFocused( focusId )`      | function | Returns `true` if `focusId` is focused.         |
+| `isFocusedExact( focusId )` | function | Returns `true` if `focusId` is exactly focused. |
+| `setFocus( focusId )`       | function | Move focus to `focusId`.                        |
 
 ## Prior Art
 
