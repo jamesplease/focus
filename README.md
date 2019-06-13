@@ -53,7 +53,7 @@ This library has the following peer dependencies:
 Render the `FocusRoot` somewhere high up in your application's component tree. This is the root node of the focus tree.
 
 ```jsx
-import { FocusRoot } from 'use-focus-path';
+import { FocusRoot } from '@xdproto/focus';
 
 export default function App() {
   return (
@@ -67,7 +67,7 @@ export default function App() {
 Next, use the Focusable component to create a focusable node on the page.
 
 ```jsx
-import { Focusable } from 'use-focus-path';
+import { Focusable } from '@xdproto/focus';
 
 export default function Profile() {
   return <Focusable className="profile">Profile</Focusable>;
@@ -107,7 +107,7 @@ All props are optional.
 | `wrapping`    | boolean | 'false'       | Set to `true` for the navigation to wrap when the user reaches the start or end of the root's children. |
 
 ```jsx
-import { FocusRoot } from 'use-focus-path';
+import { FocusRoot } from '@xdproto/focus';
 
 export default function App() {
   return (
@@ -149,7 +149,7 @@ All props are optional.
 | `...rest`                | any      |                  | All other props are applied to the underlying DOM node.                                                                                   |
 
 ```jsx
-import { Focusable } from 'use-focus-path';
+import { Focusable } from '@xdproto/focus';
 
 export default function Profile() {
   return (
@@ -170,7 +170,7 @@ export default function Profile() {
 A [Hook](https://reactjs.org/docs/hooks-intro.html) that returns utilities for working with focus.
 
 ```js
-import { useFocus } from 'use-focus-path';
+import { useFocus } from '@xdproto/focus';
 
 export default function MyComponent() {
   const { setFocus, isFocused } = useFocus();
