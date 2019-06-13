@@ -1,5 +1,9 @@
 # Changelog
 
+### v0.0.6 (2019/6/13)
+
+- The library is now distributed in CJS and ESM formats
+
 ### v0.0.5 (2019/6/3)
 
 - The `disable` prop can now be updated dynamically.
