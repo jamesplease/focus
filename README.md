@@ -42,7 +42,8 @@ This library has the following peer dependencies:
 - [API](#api)
   - [\<FocusRoot/\>](#focusroot-)
   - [\<Focusable/\>](#focusable-)
-  - [useFocus()](#usefocus)
+  - [useIsFocused()](#useisfocused-focusId-)
+  - [useSetFocus()](#usesetfocus)
 - [Prior Art](#prior-art)
 - [Limitations](#limitations)
 
@@ -165,9 +166,25 @@ export default function Profile() {
 }
 ```
 
-### `useFocus()`
+### `useSetFocus()`
 
-A [Hook](https://reactjs.org/docs/hooks-intro.html) that returns utilities for working with focus.
+A [Hook](https://reactjs.org/docs/hooks-intro.html) that returns a function to update the focus.
+
+```js
+import { useSetFocus } from '@xdproto/focus';
+
+export default function MyComponent() {
+  const setFocus = useSetFocus();
+
+  useEffect(() => {
+    setFocus('settings');
+  }, []);
+}
+```
+
+### `useIsFocused( focusId, [options] )`
+
+A [Hook](https://reactjs.org/docs/hooks-intro.html) that returns a boolean
 
 ```js
 import { useFocus } from '@xdproto/focus';
