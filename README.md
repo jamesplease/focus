@@ -138,6 +138,8 @@ All props are optional.
 | `wrapping`               | boolean  | 'false'          | Set to `true` for the navigation to wrap when the user reaches the start or end of the children list.                                     |
 | `disabled`               | boolean  | 'false'          | This node will not receive focus when `true`.                                                                                             |
 | `defaultChildFocusIndex` | number   | 0                | The index of the child to move focus to when this element receives focused. Only applies for nodes with children.                         |
+| `onFocus`                | function |                  | A function that is called when the node receives focus.                                                                                   |
+| `onBlur`                 | function |                  | A function that is called when the node loses focus.                                                                                      |
 | `onKey`                  | function |                  | A function that is called when the user presses any TV remote key while this element has focus.                                           |
 | `onArrow`                | function |                  | A function that is called when the user presses a directional button.                                                                     |
 | `onLeft`                 | function |                  | A function that is called when the user presses the left button.                                                                          |
@@ -184,19 +186,14 @@ export default function MyComponent() {
 
 ### `useIsFocused( focusId, [options] )`
 
-A [Hook](https://reactjs.org/docs/hooks-intro.html) that returns a boolean
+A [Hook](https://reactjs.org/docs/hooks-intro.html) that returns a boolean representing whether or not the
 
 ```js
-import { useFocus } from '@xdproto/focus';
+import { useIsFocused } from '@xdproto/focus';
 
 export default function MyComponent() {
-  const { setFocus, isFocused } = useFocus();
-
-  useEffect(() => {
-    if (!isFocused('settings')) {
-      setFocus('settings');
-    }
-  }, []);
+  const buttonIsFocused = useIsFocused('button');
+  const buttonIsExactlyFocused = useIsFocused('button', { exact: true });
 }
 ```
 
