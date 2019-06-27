@@ -39,6 +39,8 @@ export function Focusable(
     onSelect,
     onBack,
     onMove,
+    onFocus,
+    onBlur,
 
     ...rest
   },
@@ -115,6 +117,8 @@ export function Focusable(
         onDown,
         onSelect,
         onBack,
+        onFocus,
+        onBlur,
 
         onMove,
       });
@@ -194,6 +198,8 @@ ForwardedFocusable.propTypes = {
   onSelect: PropTypes.func,
   onBack: PropTypes.func,
   onMove: PropTypes.func,
+  onFocus: PropTypes.func,
+  onBlur: PropTypes.func,
 };
 
 export default ForwardedFocusable;

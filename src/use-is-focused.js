@@ -1,7 +1,7 @@
 import { useState, useContext, useEffect } from 'react';
 import FocusContext from './focus-context';
 
-export default function useIsFocused(focusId, { exact = false }) {
+export default function useIsFocused(focusId, { exact = false } = {}) {
   const [isFocused, setIsFocused] = useState(false);
   const { nodes } = useContext(FocusContext);
 
