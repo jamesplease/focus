@@ -70,7 +70,7 @@ export function Focusable(
     };
   });
 
-  const { nodes, createNode, destroyNode } = parentProviderValue;
+  const { nodes, createNode, destroyNode, updateNode } = parentProviderValue;
 
   const possibleNode = nodes[idRef.current];
   const hasNode = Boolean(possibleNode);
@@ -144,6 +144,15 @@ export function Focusable(
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    if (hasNodeRef.current) {
+      updateNode(idRef.current, {
+        disabled,
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [disabled]);
 
   const classString = `${className} ${isFocused ? focusedClass : ''} ${
     isFocusedExact ? focusedExactClass : ''
