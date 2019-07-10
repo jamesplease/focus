@@ -1,5 +1,9 @@
 # Changelog
 
+### v0.0.8 (2019/7/10)
+
+- Performance improvements when mounting and unmounting large numbers of Focusable components.
+
 ### v0.0.7 (2019/7/10)
 
 - New `Focusable` props: `onBlur` and `onFocus`
