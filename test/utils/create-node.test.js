@@ -43,6 +43,10 @@ describe('createNode()', () => {
 
           disabled: false,
 
+          elRef: undefined,
+
+          onBlur: null,
+          onFocus: null,
           onArrow: null,
           onDown: null,
           onKey: null,
@@ -129,9 +133,13 @@ describe('createNode()', () => {
           isFocused: true,
           isFocusedExact: true,
 
+          elRef: undefined,
+
           children: null,
           activeChildIndex: null,
 
+          onBlur: null,
+          onFocus: null,
           onArrow: null,
           onDown: null,
           onKey: null,
@@ -234,9 +242,13 @@ describe('createNode()', () => {
           isFocused: false,
           isFocusedExact: false,
 
+          elRef: undefined,
+
           children: null,
           activeChildIndex: null,
 
+          onBlur: null,
+          onFocus: null,
           onArrow: null,
           onDown: null,
           onKey: null,
@@ -339,9 +351,13 @@ describe('createNode()', () => {
           isFocused: false,
           isFocusedExact: false,
 
+          elRef: undefined,
+
           children: null,
           activeChildIndex: null,
 
+          onBlur: null,
+          onFocus: null,
           onArrow: null,
           onDown: null,
           onKey: null,
@@ -351,7 +367,6 @@ describe('createNode()', () => {
           onUp: null,
           onSelect: null,
 
-          disabled: false,
           wrapping: false,
           orientation: 'horizontal',
           restoreActiveChildIndex: false,
@@ -438,12 +453,16 @@ describe('createNode()', () => {
           id: 'test',
           parentId: 'root',
 
+          elRef: undefined,
+
           isFocused: false,
           isFocusedExact: false,
 
           children: null,
           activeChildIndex: null,
 
+          onBlur: null,
+          onFocus: null,
           onArrow: null,
           onDown: null,
           onKey: null,
