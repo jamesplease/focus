@@ -44,6 +44,7 @@ This library has the following peer dependencies:
   - [\<Focusable/\>](#focusable-)
   - [useIsFocused()](#useisfocused-focusId-)
   - [useSetFocus()](#usesetfocus)
+  - [useFocusHierarchy()](#usefocushierarchy)
 - [Prior Art](#prior-art)
 - [Limitations](#limitations)
 
@@ -186,7 +187,8 @@ export default function MyComponent() {
 
 ### `useIsFocused( focusId, [options] )`
 
-A [Hook](https://reactjs.org/docs/hooks-intro.html) that returns a boolean representing whether or not the
+A [Hook](https://reactjs.org/docs/hooks-intro.html) that returns a boolean representing whether or not the node
+with an ID of `focusId` is focused.
 
 ```js
 import { useIsFocused } from '@xdproto/focus';
@@ -204,6 +206,26 @@ The properties of the object returned from the hook are:
 | `isFocused( focusId )`      | function | Returns `true` if `focusId` is focused.         |
 | `isFocusedExact( focusId )` | function | Returns `true` if `focusId` is exactly focused. |
 | `setFocus( focusId )`       | function | Move focus to `focusId`.                        |
+
+### `useFocusHierarchy()`
+
+A [Hook](https://reactjs.org/docs/hooks-intro.html) that returns an array representing the focus hierarchy, which are the
+nodes that are focused in the node tree. Each entry in the array is a focus node. The last node in the hierarchy is the node
+that is exactly focused.
+
+```js
+import { useFocusHierarchy } from '@xdproto/focus';
+
+export default function MyComponent() {
+  const focusHierarchy = useFocusHierarchy('button');
+  console.log(focusHierarchy);
+  // => [
+  //   { nodeId: 'root', ... },
+  //   { nodeId: 'homePage', ... },
+  //   { nodeId: 'mainNav', ... },
+  // ]
+}
+```
 
 ## Prior Art
 
