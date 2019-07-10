@@ -16,7 +16,6 @@ export default function FocusRoot({ children, orientation, wrapping }) {
   });
 
   useEffect(() => {
-    window.focusTree = providerValue.focusTree;
     const lrud = focusLrud(providerValue.focusTree);
     lrud.subscribe();
 

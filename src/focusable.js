@@ -160,6 +160,7 @@ export function Focusable(
     return () => {
       unsubscribe();
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const { isFocused, isFocusedExact } = node;

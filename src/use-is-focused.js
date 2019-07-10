@@ -1,39 +1,53 @@
 import { useState, useContext, useEffect } from 'react';
 import FocusContext from './focus-context';
+import useCurrentRef from './hooks/use-current-ref';
+
+function calculateFocus({ focusId, exact, focusTree }) {
+  const currentState = focusTree.getState();
+  const node = currentState.nodes[focusId] || {};
+  const focused = exact ? node.isFocusedExact : node.isFocused;
+
+  return Boolean(focused);
+}
 
 export default function useIsFocused(focusId, { exact = false } = {}) {
-  // The tree never changes, so a ref is unnecessary
   const { focusTree } = useContext(FocusContext);
 
-  const [isFocused, setIsFocused] = useState(() => {
-    const currentState = focusTree.getState();
-    const node = currentState.nodes[focusId] || {};
-    const focusState = exact ? node.isFocusedExact : node.isFocused;
+  const exactRef = useCurrentRef(exact);
 
-    return Boolean(focusState);
+  const [isFocused, setIsFocused] = useState(() => {
+    return calculateFocus({
+      focusId,
+      exact: exactRef.current,
+      focusTree,
+    });
   });
 
   useEffect(() => {
-    const currentState = focusTree.getState();
-    let currentNode = currentState.nodes[focusId] || {};
-    let currentFocusState = exact
-      ? currentNode.isFocusedExact
-      : currentNode.isFocused;
+    const focus = calculateFocus({
+      focusId,
+      focusTree,
+      exact: exactRef.current,
+    });
 
-    // Just in case the mounting of the component changes the focus state.
-    if (isFocused !== currentFocusState) {
-      setIsFocused(Boolean(currentFocusState));
+    let currentFocus = focus;
+
+    // This check is here in the event that the mounting of the component affects the focus state
+    // (a useEffect called before this hook could have changed focus before the subscribe below is called)
+    if (isFocused !== currentFocus) {
+      setIsFocused(currentFocus);
     }
 
     const unsubscribe = focusTree.subscribe(() => {
-      const state = focusTree.getState();
-      const node = state.nodes[focusId] || {};
-      const focusState = exact ? node.isFocusedExact : node.isFocused;
+      const focus = calculateFocus({
+        focusId,
+        exact: exactRef.current,
+        focusTree,
+      });
 
-      if (Boolean(focusState) !== Boolean(currentFocusState)) {
-        currentNode = node;
-        currentFocusState = focusState;
-        setIsFocused(Boolean(focusState));
+      if (focus !== currentFocus) {
+        currentFocus = focus;
+        setIsFocused(focus);
       }
     });
 
