@@ -153,6 +153,10 @@ export function Focusable(
       const newNode = state.nodes[idRef.current] || focusNodeRef.current;
 
       if (checkIfUpdateIsNecessary(newNode, focusNodeRef.current)) {
+        // This ref is updated whenever `setNode` resolves, but there can be a delay
+        // between when that occurs. For that reason, we manually update it here to
+        // ensure that subsequent calls are using the _actual_ up-to-date node.
+        focusNodeRef.current = newNode;
         setNode(newNode);
       }
     });
