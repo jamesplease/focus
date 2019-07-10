@@ -10,7 +10,7 @@ function hierarchiesAreEqual(old = [], current = []) {
 
   const oldFocusedExact = old[old.length - 1] || {};
 
-  // ...when the last ID match
+  // ...when the last IDs match
   if (oldFocusedExact.id !== current[current.length - 1]) {
     return false;
   }
