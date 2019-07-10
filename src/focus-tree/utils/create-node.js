@@ -36,6 +36,7 @@ export default function createNode(
   {
     focusOnMount = false,
     parentId = 'root',
+    elRef,
     wrapping,
     orientation,
     defaultChildFocusIndex,
@@ -61,6 +62,7 @@ export default function createNode(
   const mergedNode = {
     ...defaultNode,
     ...existingNode,
+    elRef,
     id: nodeId,
     parentId,
   };
