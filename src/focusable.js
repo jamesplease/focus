@@ -125,6 +125,8 @@ export function Focusable(
 
     setTimeout(() => {
       createNode(idRef.current, {
+        elRef: nodeRef,
+
         parentId,
         focusOnMount,
         wrapping,
