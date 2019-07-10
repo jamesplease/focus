@@ -57,7 +57,6 @@ function getChildren(nodes, node = {}, orientation, preferEnd) {
       activeChildId = children[index];
     }
 
-    // const activeChildId = children[indexToUse];
     results = [activeChildId];
 
     if (typeof activeChildId === 'string') {

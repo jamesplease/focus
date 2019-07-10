@@ -110,7 +110,6 @@ export function Focusable(
   if (!createdRef.current) {
     createdRef.current = true;
 
-    // setTimeout(() => {
     createNode(idRef.current, {
       elRef: nodeRef,
 
@@ -136,7 +135,6 @@ export function Focusable(
 
       onMove,
     });
-    // });
   }
 
   const { nodes } = focusTree.getState();
@@ -172,24 +170,23 @@ export function Focusable(
   }, [node]);
 
   useEffect(() => {
-    checkForUpdate({});
-
-    const unsubscribe = focusTree.subscribe(() => {
-      const state = focusTree.getState();
-      const newNode = state.nodes[idRef.current] || focusNodeRef.current;
-
-      if (checkIfUpdateIsNecessary(newNode, focusNodeRef.current)) {
-        // This ref is updated whenever `setNode` resolves, but there can be a delay
-        // between when that occurs. For that reason, we manually update it here to
-        // ensure that subsequent calls are using the _actual_ up-to-date node.
-        focusNodeRef.current = newNode;
-        setNode(newNode);
-      }
+    checkForUpdate({
+      focusTree,
+      focusNodeRef,
+      idRef,
+      setNode,
     });
 
-    return () => {
-      unsubscribe();
-    };
+    const unsubscribe = focusTree.subscribe(() => {
+      checkForUpdate({
+        focusTree,
+        focusNodeRef,
+        idRef,
+        setNode,
+      });
+    });
+
+    return () => unsubscribe();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
