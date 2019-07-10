@@ -1,5 +1,11 @@
 # Changelog
 
+### v0.0.7 (2019/7/10)
+
+- New `Focusable` props: `onBlur` and `onFocus`
+- The `disabled` prop can now be updated dynamically
+- The `useFocus` hook has been split into two hooks, `useSetFocus` and `useIsFocused`
+
 ### v0.0.6 (2019/6/13)
 
 - The library is now distributed in CJS and ESM formats

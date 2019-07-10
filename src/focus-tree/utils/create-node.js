@@ -16,6 +16,8 @@ const defaultNode = {
 
   wrapping: false,
   onSelect: null,
+  onBlur: null,
+  onFocus: null,
   onKey: null,
   onMove: null,
   onLeft: null,
@@ -41,6 +43,8 @@ export default function createNode(
 
     disabled,
 
+    onBlur,
+    onFocus,
     onKey,
     onArrow,
     onLeft,
@@ -103,6 +107,14 @@ export default function createNode(
 
   if (typeof onBack !== 'undefined') {
     mergedNode.onBack = onBack;
+  }
+
+  if (typeof onFocus !== 'undefined') {
+    mergedNode.onFocus = onFocus;
+  }
+
+  if (typeof onBlur !== 'undefined') {
+    mergedNode.onBlur = onBlur;
   }
 
   if (typeof defaultChildFocusIndex === 'number') {

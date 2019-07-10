@@ -2,6 +2,7 @@ import handleArrowUtil from './utils/handle-arrow';
 import createNodeUtil from './utils/create-node';
 import destroyNodeUtil from './utils/destroy-node';
 import setFocusUtil from './utils/set-focus';
+import emitEvents from './utils/emit-events';
 
 export default function createFocusTree({
   orientation = 'horizontal',
@@ -58,6 +59,11 @@ export default function createFocusTree({
       preferEnd,
     });
 
+    emitEvents({
+      currentState,
+      nextState: newState,
+    });
+
     currentState = newState;
     onUpdate();
   }
@@ -72,8 +78,13 @@ export default function createFocusTree({
 
   function createNode(nodeId, opts) {
     const newState = createNodeUtil(currentState, nodeId, opts);
-    currentState = newState;
 
+    emitEvents({
+      currentState,
+      nextState: newState,
+    });
+
+    currentState = newState;
     onUpdate();
   }
 
@@ -112,6 +123,11 @@ export default function createFocusTree({
         preferEnd: false,
       });
 
+      emitEvents({
+        currentState,
+        nextState: newState,
+      });
+
       currentState = nextState;
       onUpdate();
     }
@@ -119,6 +135,12 @@ export default function createFocusTree({
 
   function destroyNode(nodeId) {
     const newState = destroyNodeUtil(currentState, nodeId);
+
+    emitEvents({
+      currentState,
+      nextState: newState,
+    });
+
     currentState = newState;
     onUpdate();
   }
