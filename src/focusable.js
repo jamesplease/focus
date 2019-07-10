@@ -9,6 +9,7 @@ import {
 } from 'react';
 import PropTypes from 'prop-types';
 import FocusContext from './focus-context';
+import useOnChange from './hooks/use-on-change';
 
 let uniqueValue = 0;
 
@@ -27,6 +28,19 @@ function checkIfUpdateIsNecessary(one = {}, two = {}) {
   const disabledChanged = Boolean(one.disabled) !== Boolean(two.disabled);
 
   return focusChanged || focusExactChanged || disabledChanged;
+}
+
+function checkForUpdate({ focusTree, focusNodeRef, idRef, setNode }) {
+  const state = focusTree.getState();
+  const newNode = state.nodes[idRef.current] || focusNodeRef.current;
+
+  if (checkIfUpdateIsNecessary(newNode, focusNodeRef.current)) {
+    // This ref is updated whenever `setNode` resolves, but there can be a delay
+    // between when that occurs. For that reason, we manually update it here to
+    // ensure that subsequent calls are using the _actual_ up-to-date node.
+    focusNodeRef.current = newNode;
+    setNode(newNode);
+  }
 }
 
 export function Focusable(
@@ -88,8 +102,42 @@ export function Focusable(
   });
 
   const focusTree = parentProviderValue.focusTree;
-  const { nodes } = focusTree.getState();
   const { destroyNode, createNode, updateNode } = focusTree;
+
+  const parentId = parentProviderValue.currentNodeId;
+
+  const createdRef = useRef(false);
+  if (!createdRef.current) {
+    createdRef.current = true;
+
+    createNode(idRef.current, {
+      elRef: nodeRef,
+
+      parentId,
+      focusOnMount,
+      wrapping,
+      orientation,
+      defaultChildFocusIndex,
+      restoreActiveChildIndex,
+      children,
+      disabled,
+
+      onKey,
+      onArrow,
+      onLeft,
+      onRight,
+      onUp,
+      onDown,
+      onSelect,
+      onBack,
+      onFocus,
+      onBlur,
+
+      onMove,
+    });
+  }
+
+  const { nodes } = focusTree.getState();
 
   const possibleNode = nodes[idRef.current];
   const hasNode = Boolean(possibleNode);
@@ -99,8 +147,6 @@ export function Focusable(
   useEffect(() => {
     hasNodeRef.current = hasNode;
   }, [hasNode]);
-
-  const parentId = parentProviderValue.currentNodeId;
 
   useImperativeHandle(ref, () => nodeRef.current);
 
@@ -118,62 +164,29 @@ export function Focusable(
     );
   });
 
-  const createdRef = useRef(false);
-
-  if (!createdRef.current) {
-    createdRef.current = true;
-
-    setTimeout(() => {
-      createNode(idRef.current, {
-        elRef: nodeRef,
-
-        parentId,
-        focusOnMount,
-        wrapping,
-        orientation,
-        defaultChildFocusIndex,
-        restoreActiveChildIndex,
-        children,
-        disabled,
-
-        onKey,
-        onArrow,
-        onLeft,
-        onRight,
-        onUp,
-        onDown,
-        onSelect,
-        onBack,
-        onFocus,
-        onBlur,
-
-        onMove,
-      });
-    });
-  }
-
   const focusNodeRef = useRef(node);
   useEffect(() => {
     focusNodeRef.current = node;
   }, [node]);
 
   useEffect(() => {
-    const unsubscribe = focusTree.subscribe(() => {
-      const state = focusTree.getState();
-      const newNode = state.nodes[idRef.current] || focusNodeRef.current;
-
-      if (checkIfUpdateIsNecessary(newNode, focusNodeRef.current)) {
-        // This ref is updated whenever `setNode` resolves, but there can be a delay
-        // between when that occurs. For that reason, we manually update it here to
-        // ensure that subsequent calls are using the _actual_ up-to-date node.
-        focusNodeRef.current = newNode;
-        setNode(newNode);
-      }
+    checkForUpdate({
+      focusTree,
+      focusNodeRef,
+      idRef,
+      setNode,
     });
 
-    return () => {
-      unsubscribe();
-    };
+    const unsubscribe = focusTree.subscribe(() => {
+      checkForUpdate({
+        focusTree,
+        focusNodeRef,
+        idRef,
+        setNode,
+      });
+    });
+
+    return () => unsubscribe();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -188,14 +201,17 @@ export function Focusable(
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  useEffect(() => {
+  const disabledBool = Boolean(disabled);
+
+  useOnChange(disabledBool, (isDisabled, wasDisabled) => {
     if (hasNodeRef.current) {
-      updateNode(idRef.current, {
-        disabled,
-      });
+      if (Boolean(isDisabled) !== Boolean(wasDisabled)) {
+        updateNode(idRef.current, {
+          disabled: disabledBool,
+        });
+      }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [disabled]);
+  });
 
   const classString = `${className} ${isFocused ? focusedClass : ''} ${
     isFocusedExact ? focusedExactClass : ''

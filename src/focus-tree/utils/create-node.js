@@ -28,12 +28,24 @@ const defaultNode = {
   orientation: 'horizontal',
 };
 
+const fnOpts = [
+  'onBlur',
+  'onFocus',
+  'onKey',
+  'onArrow',
+  'onLeft',
+  'onRight',
+  'onUp',
+  'onDown',
+  'onSelect',
+  'onBack',
+  'onMove',
+];
+
 // Create a new node.
 // Returns the new state.
-export default function createNode(
-  currentState,
-  nodeId,
-  {
+export default function createNode(currentState, nodeId, opts = {}) {
+  const {
     focusOnMount = false,
     parentId = 'root',
     elRef,
@@ -43,21 +55,8 @@ export default function createNode(
     restoreActiveChildIndex,
 
     disabled,
+  } = opts;
 
-    onBlur,
-    onFocus,
-    onKey,
-    onArrow,
-    onLeft,
-    onRight,
-    onUp,
-    onDown,
-    onSelect,
-    onBack,
-
-    onMove,
-  } = {}
-) {
   const existingNode = currentState.nodes[nodeId];
   const mergedNode = {
     ...defaultNode,
@@ -67,68 +66,31 @@ export default function createNode(
     parentId,
   };
 
+  for (let fnIndex = 0; fnIndex < fnOpts.length; fnIndex++) {
+    const fnName = fnOpts[fnIndex];
+    if (typeof opts[fnName] === 'function') {
+      mergedNode[fnName] = opts[fnName];
+    }
+  }
+
   if (typeof wrapping !== 'undefined') {
-    mergedNode.wrapping = wrapping;
+    mergedNode.wrapping = Boolean(wrapping);
   }
 
   if (typeof orientation !== 'undefined') {
     mergedNode.orientation = orientation;
   }
 
-  if (typeof onSelect !== 'undefined') {
-    mergedNode.onSelect = onSelect;
-  }
-
-  if (typeof onKey !== 'undefined') {
-    mergedNode.onKey = onKey;
-  }
-
-  if (typeof onArrow !== 'undefined') {
-    mergedNode.onArrow = onArrow;
-  }
-
-  if (typeof onUp !== 'undefined') {
-    mergedNode.onUp = onUp;
-  }
-
-  if (typeof onDown !== 'undefined') {
-    mergedNode.onDown = onDown;
-  }
-
-  if (typeof onRight !== 'undefined') {
-    mergedNode.onRight = onRight;
-  }
-
-  if (typeof onLeft !== 'undefined') {
-    mergedNode.onLeft = onLeft;
-  }
-
-  if (typeof onMove !== 'undefined') {
-    mergedNode.onMove = onMove;
-  }
-
-  if (typeof onBack !== 'undefined') {
-    mergedNode.onBack = onBack;
-  }
-
-  if (typeof onFocus !== 'undefined') {
-    mergedNode.onFocus = onFocus;
-  }
-
-  if (typeof onBlur !== 'undefined') {
-    mergedNode.onBlur = onBlur;
-  }
-
   if (typeof defaultChildFocusIndex === 'number') {
     mergedNode.defaultChildFocusIndex = defaultChildFocusIndex;
   }
 
-  if (typeof restoreActiveChildIndex === 'boolean') {
-    mergedNode.restoreActiveChildIndex = restoreActiveChildIndex;
+  if (typeof restoreActiveChildIndex !== 'undefined') {
+    mergedNode.restoreActiveChildIndex = Boolean(restoreActiveChildIndex);
   }
 
-  if (typeof disabled === 'boolean') {
-    mergedNode.disabled = disabled;
+  if (typeof disabled !== 'undefined') {
+    mergedNode.disabled = Boolean(disabled);
   }
 
   // We start off the new nodes by adding our new ID.
