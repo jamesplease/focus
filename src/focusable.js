@@ -12,6 +12,15 @@ import FocusContext from './focus-context';
 
 let uniqueValue = 0;
 
+function checkIfUpdateIsNecessary(one = {}, two = {}) {
+  const focusChanged = Boolean(one.isFocused) !== Boolean(two.isFocused);
+  const focusExactChanged =
+    Boolean(one.isFocusedExact) !== Boolean(two.isFocusedExact);
+  const disabledChanged = Boolean(one.disabled) !== Boolean(two.disabled);
+
+  return focusChanged || focusExactChanged || disabledChanged;
+}
+
 export function Focusable(
   {
     className = '',
@@ -63,14 +72,16 @@ export function Focusable(
   }
 
   const parentProviderValue = useContext(FocusContext);
-  const [providerValue, setProviderValue] = useState(() => {
+  const [providerValue] = useState(() => {
     return {
-      ...parentProviderValue,
+      focusTree: parentProviderValue.focusTree,
       currentNodeId: idRef.current,
     };
   });
 
-  const { nodes, createNode, destroyNode, updateNode } = parentProviderValue;
+  const focusTree = parentProviderValue.focusTree;
+  const { nodes } = focusTree.getState();
+  const { destroyNode, createNode, updateNode } = focusTree;
 
   const possibleNode = nodes[idRef.current];
   const hasNode = Boolean(possibleNode);
@@ -81,17 +92,23 @@ export function Focusable(
     hasNodeRef.current = hasNode;
   }, [hasNode]);
 
-  // TODO: verify that renders are as expected. Is it rendering too much?
-  useEffect(() => {
-    setProviderValue({
-      ...parentProviderValue,
-      currentNodeId: idRef.current,
-    });
-  }, [parentProviderValue]);
-
   const parentId = parentProviderValue.currentNodeId;
 
   useImperativeHandle(ref, () => nodeRef.current);
+
+  // This node needs to be updated
+  const [node, setNode] = useState(() => {
+    return (
+      nodes[idRef.current] || {
+        id: idRef.current,
+        isFocused: false,
+        isFocusedExact: false,
+        children: null,
+        disabled: false,
+        activeChildIndex: null,
+      }
+    );
+  });
 
   const createdRef = useRef(false);
 
@@ -125,14 +142,25 @@ export function Focusable(
     });
   }
 
-  const node = nodes[idRef.current] || {
-    id: idRef.current,
-    isFocused: false,
-    isFocusedExact: false,
-    children: null,
-    disabled: false,
-    activeChildIndex: null,
-  };
+  const focusNodeRef = useRef(node);
+  useEffect(() => {
+    focusNodeRef.current = node;
+  }, [node]);
+
+  useEffect(() => {
+    const unsubscribe = focusTree.subscribe(() => {
+      const state = focusTree.getState();
+      const newNode = state.nodes[idRef.current] || focusNodeRef.current;
+
+      if (checkIfUpdateIsNecessary(newNode, focusNodeRef.current)) {
+        setNode(newNode);
+      }
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, []);
 
   const { isFocused, isFocusedExact } = node;
 
