@@ -12,6 +12,14 @@ import FocusContext from './focus-context';
 
 let uniqueValue = 0;
 
+// Presently, the only impact a focus node has on the DOM is related to:
+//
+//   - isFocused
+//   - isFocusedExact
+//   - disabled
+//
+// through the form of the class names. Therefore, we only update the state
+// when one of these attributes change.
 function checkIfUpdateIsNecessary(one = {}, two = {}) {
   const focusChanged = Boolean(one.isFocused) !== Boolean(two.isFocused);
   const focusExactChanged =
