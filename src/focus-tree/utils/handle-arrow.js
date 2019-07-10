@@ -51,9 +51,7 @@ export default function handleArrow({ currentState, arrow, setFocus }) {
       index + distance,
       wrapping
     );
-
     const newFocusedId = parentsChildren[newIndex];
-
     const newFocusedNode = currentState.nodes[newFocusedId];
 
     // Disabled nodes cannot receive focus
@@ -67,11 +65,6 @@ export default function handleArrow({ currentState, arrow, setFocus }) {
 
     setFocus(newFocusedId, orientation, preferEnd);
 
-    const newActiveIndex = currentState.nodes[parentId].activeChildIndex;
-    const newActiveNodeId =
-      currentState.nodes[parentId].children[newActiveIndex];
-    const newActiveNode = currentState.nodes[newActiveNodeId];
-
     if (typeof parentNode.onMove === 'function') {
       parentNode.onMove({
         orientation,
@@ -79,9 +72,9 @@ export default function handleArrow({ currentState, arrow, setFocus }) {
         arrow,
         node: parentNode,
         prevChildIndex: parentNode.activeChildIndex,
-        nextChildIndex: newActiveIndex,
+        nextChildIndex: newIndex,
         prevChildNode: currentActiveNode,
-        nextChildNode: newActiveNode,
+        nextChildNode: newFocusedNode,
       });
     }
   }
