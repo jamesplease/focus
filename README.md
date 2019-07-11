@@ -45,7 +45,7 @@ This library has the following peer dependencies:
 - [**API**](#api)
   - [\<FocusRoot/\>](#focusroot-)
   - [\<Focusable/\>](#focusable-)
-  - [useIsFocused()](#useisfocused-focusId-)
+  - [useIsFocused()](#useisfocused-focusid-options-)
   - [useSetFocus()](#usesetfocus)
   - [useFocusHierarchy()](#usefocushierarchy)
 - [**Prior Art**](#prior-art)
