@@ -5,19 +5,19 @@
 
 A [React](https://reactjs.org/) library for managing focus in TV apps.
 
-✓ Manages LRUD navigation for you  
-✓ Declarative API
+✓ Controls LRUD navigation for you – automatically  
+✓ Hooks-first declarative API
 
 ## Motivation
 
-Users of TV apps typically use LRUD for navigation. Accordingly, the element on the page that has focus
+Users of TV apps most often use LRUD controls to navigate within the app. Consequently, the focused element on the page
 is of particular importance.
 
-It is not always the case that your runtime environment includes a system for managing focus.
-Environments that do include such a system, like the browser, typically have support for a
-focus system that doesn't align with the needs of TVs.
+It is not always the case that your runtime environment includes a built-in system for managing focus.
+Environments that _do_ include such a system, like the browser, often have a simple
+focus system that doesn't align with the complex needs of LRUD environments.
 
-Because of this, it is up to the app to manage its own focus state. This library helps you to do that.
+Because of this, it is up to the application to manage its own focus state. This library helps you to do that.
 
 ## Installation
 
@@ -35,21 +35,21 @@ yarn add @xdproto/focus
 
 This library has the following peer dependencies:
 
-- `react@^16.8.0`
+- [`react`](https://www.npmjs.com/package/react)`@^16.8.0`
 
 ## Table of Contents
 
-- [Guides](#guides)
+- [**Guides**](#guides)
   - [Getting started](#getting-started)
   - [FAQ](#faq)
-- [API](#api)
+- [**API**](#api)
   - [\<FocusRoot/\>](#focusroot-)
   - [\<Focusable/\>](#focusable-)
   - [useIsFocused()](#useisfocused-focusId-)
   - [useSetFocus()](#usesetfocus)
   - [useFocusHierarchy()](#usefocushierarchy)
-- [Prior Art](#prior-art)
-- [Limitations](#limitations)
+- [**Prior Art**](#prior-art)
+- [**Limitations**](#limitations)
 
 ## Guides
 
