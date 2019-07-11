@@ -1,5 +1,8 @@
 # Focus
 
+[![Travis build status](http://img.shields.io/travis/jamesplease/focus.svg?style=flat)](https://travis-ci.org/jamesplease/focus)
+[![npm version](https://img.shields.io/npm/v/@xdproto/focus.svg)](https://www.npmjs.com/package/@xdproto/focus)
+
 A [React](https://reactjs.org/) library for managing focus in TV apps.
 
 ✓ Manages LRUD navigation for you  
