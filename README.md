@@ -35,7 +35,7 @@ yarn add @xdproto/focus
 
 This library has the following peer dependencies:
 
-- [`react`](https://www.npmjs.com/package/react)`@^16.8.0`
+- [`react@^16.8.0`](https://www.npmjs.com/package/react)
 
 ## Table of Contents
 
