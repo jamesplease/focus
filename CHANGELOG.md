@@ -1,5 +1,10 @@
 # Changelog
 
+### v1.0.0 (2019/7/11)
+
+- New hook: `useFocusHierarchy`
+- This release marks API stability
+
 ### v0.0.8 (2019/7/10)
 
 - Performance improvements when mounting and unmounting large numbers of Focusable components.
