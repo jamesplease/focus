@@ -29,6 +29,13 @@ export default function useFocusHierarchy() {
   const focusHierarchyRef = useCurrentRef(focusHierarchy);
 
   useEffect(() => {
+    const state = focusTree.getState();
+    const focusHierarchy = state.focusHierarchy;
+
+    if (!hierarchiesAreEqual(focusHierarchyRef.current, focusHierarchy)) {
+      setFocusHierarchy(focusHierarchy.map(nodeId => state.nodes[nodeId]));
+    }
+
     const unsubscribe = focusTree.subscribe(() => {
       const state = focusTree.getState();
       const focusHierarchy = state.focusHierarchy;
