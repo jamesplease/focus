@@ -14,7 +14,7 @@ describe('createNode()', () => {
           isFocusedExact: true,
 
           children: null,
-          activeChildIndex: null,
+          focusedChildIndex: null,
         },
       },
     };
@@ -31,8 +31,8 @@ describe('createNode()', () => {
           isFocusedExact: false,
 
           children: ['one'],
-          activeChildIndex: 0,
-          previousActiveChildIndex: null,
+          focusedChildIndex: 0,
+          previousFocusedChildIndex: null,
         },
         one: {
           id: 'one',
@@ -56,9 +56,9 @@ describe('createNode()', () => {
           onUp: null,
 
           children: null,
-          activeChildIndex: null,
-          previousActiveChildIndex: null,
-          restoreActiveChildIndex: false,
+          focusedChildIndex: null,
+          previousFocusedChildIndex: null,
+          restoreFocusedChildIndex: false,
 
           wrapping: false,
           onSelect: null,
@@ -81,7 +81,7 @@ describe('createNode()', () => {
           isFocusedExact: false,
 
           children: ['oneParent'],
-          activeChildIndex: 0,
+          focusedChildIndex: 0,
         },
         oneParent: {
           id: 'oneParent',
@@ -91,7 +91,7 @@ describe('createNode()', () => {
           isFocusedExact: true,
 
           children: null,
-          activeChildIndex: null,
+          focusedChildIndex: null,
         },
       },
     };
@@ -112,8 +112,8 @@ describe('createNode()', () => {
           isFocusedExact: false,
 
           children: ['oneParent'],
-          activeChildIndex: 0,
-          previousActiveChildIndex: 0,
+          focusedChildIndex: 0,
+          previousFocusedChildIndex: 0,
         },
         oneParent: {
           id: 'oneParent',
@@ -123,8 +123,8 @@ describe('createNode()', () => {
           isFocusedExact: false,
 
           children: ['one'],
-          activeChildIndex: 0,
-          previousActiveChildIndex: null,
+          focusedChildIndex: 0,
+          previousFocusedChildIndex: null,
         },
         one: {
           id: 'one',
@@ -136,7 +136,7 @@ describe('createNode()', () => {
           elRef: undefined,
 
           children: null,
-          activeChildIndex: null,
+          focusedChildIndex: null,
 
           onBlur: null,
           onFocus: null,
@@ -152,8 +152,8 @@ describe('createNode()', () => {
           disabled: false,
           wrapping: false,
           orientation: 'horizontal',
-          previousActiveChildIndex: null,
-          restoreActiveChildIndex: false,
+          previousFocusedChildIndex: null,
+          restoreFocusedChildIndex: false,
         },
       },
     });
@@ -172,7 +172,7 @@ describe('createNode()', () => {
           isFocusedExact: false,
 
           children: ['oneParent'],
-          activeChildIndex: 0,
+          focusedChildIndex: 0,
         },
         oneParent: {
           id: 'oneParent',
@@ -182,7 +182,7 @@ describe('createNode()', () => {
           isFocusedExact: false,
 
           children: ['two'],
-          activeChildIndex: 0,
+          focusedChildIndex: 0,
         },
         two: {
           id: 'two',
@@ -192,7 +192,7 @@ describe('createNode()', () => {
           isFocusedExact: true,
 
           children: null,
-          activeChildIndex: null,
+          focusedChildIndex: null,
         },
       },
     };
@@ -213,7 +213,7 @@ describe('createNode()', () => {
           isFocusedExact: false,
 
           children: ['oneParent'],
-          activeChildIndex: 0,
+          focusedChildIndex: 0,
         },
         oneParent: {
           id: 'oneParent',
@@ -223,7 +223,7 @@ describe('createNode()', () => {
           isFocusedExact: false,
 
           children: ['two', 'one'],
-          activeChildIndex: 0,
+          focusedChildIndex: 0,
         },
         two: {
           id: 'two',
@@ -233,7 +233,7 @@ describe('createNode()', () => {
           isFocusedExact: true,
 
           children: null,
-          activeChildIndex: null,
+          focusedChildIndex: null,
         },
         one: {
           id: 'one',
@@ -245,7 +245,7 @@ describe('createNode()', () => {
           elRef: undefined,
 
           children: null,
-          activeChildIndex: null,
+          focusedChildIndex: null,
 
           onBlur: null,
           onFocus: null,
@@ -261,7 +261,7 @@ describe('createNode()', () => {
           disabled: false,
           wrapping: false,
           orientation: 'horizontal',
-          restoreActiveChildIndex: false,
+          restoreFocusedChildIndex: false,
         },
       },
     });
@@ -280,7 +280,7 @@ describe('createNode()', () => {
           isFocusedExact: false,
 
           children: ['nodeOne', 'nodeTwo'],
-          activeChildIndex: 1,
+          focusedChildIndex: 1,
         },
         nodeOne: {
           id: 'nodeOne',
@@ -290,7 +290,7 @@ describe('createNode()', () => {
           isFocusedExact: false,
 
           children: null,
-          activeChildIndex: null,
+          focusedChildIndex: null,
         },
         nodeTwo: {
           id: 'nodeTwo',
@@ -300,7 +300,7 @@ describe('createNode()', () => {
           isFocusedExact: true,
 
           children: null,
-          activeChildIndex: null,
+          focusedChildIndex: null,
         },
       },
     };
@@ -321,7 +321,7 @@ describe('createNode()', () => {
           isFocusedExact: false,
 
           children: ['nodeOne', 'nodeTwo'],
-          activeChildIndex: 1,
+          focusedChildIndex: 1,
         },
         nodeOne: {
           id: 'nodeOne',
@@ -331,7 +331,7 @@ describe('createNode()', () => {
           isFocusedExact: false,
 
           children: ['test'],
-          activeChildIndex: null,
+          focusedChildIndex: null,
         },
         nodeTwo: {
           id: 'nodeTwo',
@@ -341,7 +341,7 @@ describe('createNode()', () => {
           isFocusedExact: true,
 
           children: null,
-          activeChildIndex: null,
+          focusedChildIndex: null,
         },
         test: {
           id: 'test',
@@ -354,7 +354,7 @@ describe('createNode()', () => {
           elRef: undefined,
 
           children: null,
-          activeChildIndex: null,
+          focusedChildIndex: null,
 
           onBlur: null,
           onFocus: null,
@@ -369,7 +369,7 @@ describe('createNode()', () => {
 
           wrapping: false,
           orientation: 'horizontal',
-          restoreActiveChildIndex: false,
+          restoreFocusedChildIndex: false,
         },
       },
     });
@@ -388,7 +388,7 @@ describe('createNode()', () => {
           isFocusedExact: false,
 
           children: ['nodeOne', 'nodeTwo'],
-          activeChildIndex: 1,
+          focusedChildIndex: 1,
         },
         nodeOne: {
           id: 'nodeOne',
@@ -398,7 +398,7 @@ describe('createNode()', () => {
           isFocusedExact: false,
 
           children: null,
-          activeChildIndex: null,
+          focusedChildIndex: null,
         },
         nodeTwo: {
           id: 'nodeTwo',
@@ -408,7 +408,7 @@ describe('createNode()', () => {
           isFocusedExact: true,
 
           children: null,
-          activeChildIndex: null,
+          focusedChildIndex: null,
         },
       },
     };
@@ -425,7 +425,7 @@ describe('createNode()', () => {
           isFocusedExact: false,
 
           children: ['nodeOne', 'nodeTwo', 'test'],
-          activeChildIndex: 1,
+          focusedChildIndex: 1,
         },
         nodeOne: {
           id: 'nodeOne',
@@ -435,7 +435,7 @@ describe('createNode()', () => {
           isFocusedExact: false,
 
           children: null,
-          activeChildIndex: null,
+          focusedChildIndex: null,
         },
         nodeTwo: {
           id: 'nodeTwo',
@@ -445,7 +445,7 @@ describe('createNode()', () => {
           isFocusedExact: true,
 
           children: null,
-          activeChildIndex: null,
+          focusedChildIndex: null,
         },
         test: {
           disabled: false,
@@ -459,7 +459,7 @@ describe('createNode()', () => {
           isFocusedExact: false,
 
           children: null,
-          activeChildIndex: null,
+          focusedChildIndex: null,
 
           onBlur: null,
           onFocus: null,
@@ -474,7 +474,7 @@ describe('createNode()', () => {
 
           wrapping: false,
           orientation: 'horizontal',
-          restoreActiveChildIndex: false,
+          restoreFocusedChildIndex: false,
         },
       },
     });

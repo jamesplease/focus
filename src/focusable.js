@@ -58,7 +58,7 @@ export function Focusable(
     wrapping,
     orientation,
     defaultChildFocusIndex,
-    restoreActiveChildIndex,
+    restoreFocusedChildIndex,
     disabled,
 
     onKey,
@@ -118,7 +118,7 @@ export function Focusable(
       wrapping,
       orientation,
       defaultChildFocusIndex,
-      restoreActiveChildIndex,
+      restoreFocusedChildIndex,
       children,
       disabled,
 
@@ -159,7 +159,7 @@ export function Focusable(
         isFocusedExact: false,
         children: null,
         disabled: false,
-        activeChildIndex: null,
+        focusedChildIndex: null,
       }
     );
   });
@@ -254,7 +254,7 @@ ForwardedFocusable.propTypes = {
   wrapping: PropTypes.bool,
   orientation: PropTypes.oneOf(['horizontal', 'vertical']),
   defaultChildFocusIndex: PropTypes.number,
-  restoreActiveChildIndex: PropTypes.bool,
+  restoreFocusedChildIndex: PropTypes.bool,
   disabled: PropTypes.bool,
 
   onKey: PropTypes.func,
