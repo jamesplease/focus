@@ -68,6 +68,11 @@ export default function destroyNode(currentState, nodeId) {
 
   newNodes[parentId] = mergeTwoNodes(parentNode, {
     children: newParentChildren,
+    // TEST alert: delete a child from a parent that has MULTIPLE children
+    // to ensure that these get overwritten properly by `getNodesFromFocusChange`
+    focusedChildIndex: null,
+    isFocusedExact: true,
+    previousFocusedChildIndex: null
   });
 
   const newFocusId = getNearestNode(currentState.nodes, nodeId);

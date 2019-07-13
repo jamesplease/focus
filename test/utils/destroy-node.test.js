@@ -64,7 +64,7 @@ describe('destroyNode()', () => {
 
           children: null,
           focusedChildIndex: null,
-          previousFocusedChildIndex: 0,
+          previousFocusedChildIndex: null,
         },
       },
     });
