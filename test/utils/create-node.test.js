@@ -113,7 +113,6 @@ describe('createNode()', () => {
 
           children: ['oneParent'],
           focusedChildIndex: 0,
-          previousFocusedChildIndex: 0,
         },
         oneParent: {
           id: 'oneParent',
