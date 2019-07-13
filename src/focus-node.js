@@ -196,11 +196,24 @@ export function FocusNode(
     }
   });
 
+  useOnChange(defaultChildFocusIndex, newIndex => {
+    if (hasNodeRef.current) {
+      updateNode(
+        idRef.current,
+        {
+          defaultChildFocusIndex: newIndex,
+        },
+        true
+      );
+    }
+  });
+
   const classString = `${className} ${isFocused ? focusedClass : ''} ${
     isFocusedExact ? focusedExactClass : ''
   } ${disabled ? disabledClass : ''}`;
 
-  const child = typeof children === 'function' ? children({ focusNode: node }) : undefined;
+  const child =
+    typeof children === 'function' ? children({ focusNode: node }) : undefined;
 
   return createElement(
     FocusContext.Provider,
