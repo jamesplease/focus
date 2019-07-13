@@ -22,10 +22,10 @@ describe('useSetFocus()', () => {
         return (
           <FocusRoot>
             <FocusNode focusId="a" onFocus={onFocusA} onBlur={onBlurA}>
-              hi
+              {() => <span>hi</span>}
             </FocusNode>
             <FocusNode focusId="b" onFocus={onFocusB} onBlur={onBlurB}>
-              {children}
+              {() => children}
             </FocusNode>
           </FocusRoot>
         );

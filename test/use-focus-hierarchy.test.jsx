@@ -21,9 +21,9 @@ describe('useFocusHierarchy()', () => {
         return (
           <FocusRoot>
             <FocusNode focusId="a">
-              <FocusNode focusId="a.1" />
+              {() => <FocusNode focusId="a.1" />}
             </FocusNode>
-            <FocusNode focusId="b">{children}</FocusNode>
+            <FocusNode focusId="b">{() => children}</FocusNode>
           </FocusRoot>
         );
       };
