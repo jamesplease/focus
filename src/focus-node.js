@@ -26,7 +26,7 @@ function checkForUpdate({ focusTree, focusNodeRef, idRef, setNode }) {
   }
 }
 
-export function Focusable(
+export function FocusNode(
   {
     className = '',
     focusedClass = 'isFocused',
@@ -218,9 +218,9 @@ export function Focusable(
   );
 }
 
-const ForwardedFocusable = forwardRef(Focusable);
+const ForwardedFocusNode = forwardRef(FocusNode);
 
-ForwardedFocusable.propTypes = {
+ForwardedFocusNode.propTypes = {
   className: PropTypes.string,
   focusedClass: PropTypes.string,
   focusedExactClass: PropTypes.string,
@@ -253,4 +253,4 @@ ForwardedFocusable.propTypes = {
   onBlur: PropTypes.func,
 };
 
-export default ForwardedFocusable;
+export default ForwardedFocusNode;

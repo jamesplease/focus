@@ -11,11 +11,11 @@
 
 ### v0.0.8 (2019/7/10)
 
-- Performance improvements when mounting and unmounting large numbers of Focusable components.
+- Performance improvements when mounting and unmounting large numbers of FocusNode components.
 
 ### v0.0.7 (2019/7/10)
 
-- New `Focusable` props: `onBlur` and `onFocus`
+- New `FocusNode` props: `onBlur` and `onFocus`
 - The `disabled` prop can now be updated dynamically
 - The `useFocus` hook has been split into two hooks, `useSetFocus` and `useIsFocused`
 

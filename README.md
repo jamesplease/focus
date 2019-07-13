@@ -44,7 +44,7 @@ This library has the following peer dependencies:
   - [FAQ](#faq)
 - [**API**](#api)
   - [\<FocusRoot/\>](#focusroot-)
-  - [\<Focusable/\>](#focusable-)
+  - [\<FocusNode/\>](#FocusNode-)
   - [useIsFocused()](#useisfocused-focusid-options-)
   - [useSetFocus()](#usesetfocus)
   - [useFocusHierarchy()](#usefocushierarchy)
@@ -69,20 +69,20 @@ export default function App() {
 }
 ```
 
-Next, use the Focusable component to create a focusable node on the page.
+Next, use the FocusNode component to create a focusable node on the page.
 
 ```jsx
-import { Focusable } from '@xdproto/focus';
+import { FocusNode } from '@xdproto/focus';
 
 export default function Profile() {
-  return <Focusable className="profile">Profile</Focusable>;
+  return <FocusNode className="profile">Profile</FocusNode>;
 }
 ```
 
-This library manages moving focus between the Focusable nodes as the user inputs
+This library manages moving focus between the FocusNode nodes as the user inputs
 LRUD commands.
 
-Configuring this behavior is managed entirely through props of the Focusable components. To
+Configuring this behavior is managed entirely through props of the FocusNode components. To
 learn more about those props, refer to the API documentation below.
 
 ### FAQ
@@ -98,7 +98,7 @@ The [limitations](#limitations) described below may help you to determine that.
 
 ## API
 
-This library has three named exports: `FocusRoot`, `Focusable`, and `useFocus`.
+This library has three named exports: `FocusRoot`, `FocusNode`, and `useFocus`.
 
 ### `<FocusRoot />`
 
@@ -123,9 +123,9 @@ export default function App() {
 }
 ```
 
-### `<Focusable />`
+### `<FocusNode />`
 
-A [Component](https://reactjs.org/docs/react-component.html) that represents a focusable node in the focus tree.
+A [Component](https://reactjs.org/docs/react-component.html) that represents a FocusNode node in the focus tree.
 
 All props are optional.
 
@@ -156,18 +156,18 @@ All props are optional.
 | `...rest`                | any      |                  | All other props are applied to the underlying DOM node.                                                                                   |
 
 ```jsx
-import { Focusable } from '@xdproto/focus';
+import { FocusNode } from '@xdproto/focus';
 
 export default function Profile() {
   return (
-    <Focusable
+    <FocusNode
       nodeType="button"
       className="profileBtn"
       onSelect={({ node }) => {
         console.log('The user just selected this profile', node);
       }}>
       Profile
-    </Focusable>
+    </FocusNode>
   );
 }
 ```
