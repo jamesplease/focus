@@ -1,6 +1,6 @@
 import React from 'react';
 import { renderHook, act } from 'react-hooks-testing-library';
-import { useSetFocus, FocusRoot, Focusable } from '../src';
+import { useSetFocus, FocusRoot, FocusNode } from '../src';
 
 describe('useSetFocus()', () => {
   it('should return a function', () => {
@@ -12,7 +12,7 @@ describe('useSetFocus()', () => {
   });
 
   describe('when calling it', () => {
-    it('can trigger focus and blur events on Focusable components', () => {
+    it('can trigger focus and blur events on FocusNode components', () => {
       const onFocusA = jest.fn();
       const onFocusB = jest.fn();
       const onBlurA = jest.fn();
@@ -21,12 +21,12 @@ describe('useSetFocus()', () => {
       const wrapper = ({ children }) => {
         return (
           <FocusRoot>
-            <Focusable focusId="a" onFocus={onFocusA} onBlur={onBlurA}>
+            <FocusNode focusId="a" onFocus={onFocusA} onBlur={onBlurA}>
               hi
-            </Focusable>
-            <Focusable focusId="b" onFocus={onFocusB} onBlur={onBlurB}>
+            </FocusNode>
+            <FocusNode focusId="b" onFocus={onFocusB} onBlur={onBlurB}>
               {children}
-            </Focusable>
+            </FocusNode>
           </FocusRoot>
         );
       };

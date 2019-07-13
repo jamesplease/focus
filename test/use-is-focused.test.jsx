@@ -1,6 +1,6 @@
 import React from 'react';
 import { renderHook } from 'react-hooks-testing-library';
-import { useIsFocused, FocusRoot, Focusable } from '../src';
+import { useIsFocused, FocusRoot, FocusNode } from '../src';
 
 describe('useIsFocused()', () => {
   describe('just the root', () => {
@@ -26,8 +26,8 @@ describe('useIsFocused()', () => {
       const wrapper = ({ children }) => {
         return (
           <FocusRoot>
-            <Focusable focusId="a">hi</Focusable>
-            <Focusable focusId="b">{children}</Focusable>
+            <FocusNode focusId="a">hi</FocusNode>
+            <FocusNode focusId="b">{children}</FocusNode>
           </FocusRoot>
         );
       };
@@ -43,10 +43,10 @@ describe('useIsFocused()', () => {
       const wrapper = ({ children }) => {
         return (
           <FocusRoot>
-            <Focusable focusId="a">
-              <Focusable focusId="a.1" />
-            </Focusable>
-            <Focusable focusId="b">{children}</Focusable>
+            <FocusNode focusId="a">
+              <FocusNode focusId="a.1" />
+            </FocusNode>
+            <FocusNode focusId="b">{children}</FocusNode>
           </FocusRoot>
         );
       };
@@ -65,10 +65,10 @@ describe('useIsFocused()', () => {
       const wrapper = ({ children }) => {
         return (
           <FocusRoot>
-            <Focusable focusId="a">
-              <Focusable focusId="a.1" />
-            </Focusable>
-            <Focusable focusId="b">{children}</Focusable>
+            <FocusNode focusId="a">
+              <FocusNode focusId="a.1" />
+            </FocusNode>
+            <FocusNode focusId="b">{children}</FocusNode>
           </FocusRoot>
         );
       };
@@ -84,10 +84,10 @@ describe('useIsFocused()', () => {
       const wrapper = ({ children }) => {
         return (
           <FocusRoot>
-            <Focusable focusId="a">
-              <Focusable focusId="a.1" />
-            </Focusable>
-            <Focusable focusId="b">{children}</Focusable>
+            <FocusNode focusId="a">
+              <FocusNode focusId="a.1" />
+            </FocusNode>
+            <FocusNode focusId="b">{children}</FocusNode>
           </FocusRoot>
         );
       };
@@ -103,10 +103,10 @@ describe('useIsFocused()', () => {
       const wrapper = ({ children }) => {
         return (
           <FocusRoot>
-            <Focusable focusId="a">
-              <Focusable focusId="a.1" />
-            </Focusable>
-            <Focusable focusId="b">{children}</Focusable>
+            <FocusNode focusId="a">
+              <FocusNode focusId="a.1" />
+            </FocusNode>
+            <FocusNode focusId="b">{children}</FocusNode>
           </FocusRoot>
         );
       };
@@ -122,10 +122,10 @@ describe('useIsFocused()', () => {
       const wrapper = ({ children }) => {
         return (
           <FocusRoot>
-            <Focusable focusId="a">
-              <Focusable focusId="a.1" />
-            </Focusable>
-            <Focusable focusId="b">{children}</Focusable>
+            <FocusNode focusId="a">
+              <FocusNode focusId="a.1" />
+            </FocusNode>
+            <FocusNode focusId="b">{children}</FocusNode>
           </FocusRoot>
         );
       };
@@ -144,12 +144,12 @@ describe('useIsFocused()', () => {
       const wrapper = ({ children }) => {
         return (
           <FocusRoot>
-            <Focusable focusId="a">
-              <Focusable focusId="a.1" />
-            </Focusable>
-            <Focusable focusId="b" focusOnMount>
+            <FocusNode focusId="a">
+              <FocusNode focusId="a.1" />
+            </FocusNode>
+            <FocusNode focusId="b" focusOnMount>
               {children}
-            </Focusable>
+            </FocusNode>
           </FocusRoot>
         );
       };

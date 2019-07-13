@@ -1,6 +1,6 @@
 import React from 'react';
 import { renderHook } from 'react-hooks-testing-library';
-import { useFocusHierarchy, FocusRoot, Focusable } from '../src';
+import { useFocusHierarchy, FocusRoot, FocusNode } from '../src';
 
 describe('useFocusHierarchy()', () => {
   describe('just the root', () => {
@@ -20,10 +20,10 @@ describe('useFocusHierarchy()', () => {
       const wrapper = ({ children }) => {
         return (
           <FocusRoot>
-            <Focusable focusId="a">
-              <Focusable focusId="a.1" />
-            </Focusable>
-            <Focusable focusId="b">{children}</Focusable>
+            <FocusNode focusId="a">
+              <FocusNode focusId="a.1" />
+            </FocusNode>
+            <FocusNode focusId="b">{children}</FocusNode>
           </FocusRoot>
         );
       };
