@@ -1,5 +1,9 @@
 # Changelog
 
+### v1.0.1 (2019/7/12)
+
+- Fix an issue where `useFocusHierarchy` would not reflect the latest hierarchy
+
 ### v1.0.0 (2019/7/11)
 
 - New hook: `useFocusHierarchy`
