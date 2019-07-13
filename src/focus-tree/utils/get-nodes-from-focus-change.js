@@ -1,5 +1,6 @@
 import getFocusedHierarchy from './get-focused-hierarchy';
 import defaultNode from './default-node';
+import getFocusDiff from './get-focus-diff';
 
 // TODO: if `newFocusId` is a child, you must go up its tree
 // to set focus to the parent
@@ -18,7 +19,12 @@ export default function getNodesFromFocusChange(
     preferEnd
   );
 
-  const updatedNodes = currentState.focusHierarchy.reduce((result, nodeId) => {
+  const diff = getFocusDiff({
+    focusHierarchy,
+    prevFocusHierarchy: currentState.focusHierarchy
+  })
+
+  const updatedNodes = diff.blur.reduce((result, nodeId) => {
     // We only reset the focus state if the node still exists.
     // Otherwise, it may have been deleted.
     if (currentState.nodes[nodeId]) {
@@ -31,20 +37,33 @@ export default function getNodesFromFocusChange(
     }
 
     return result;
-  }, {});
+  }, {})
 
-  let focusedNodeId;
-  focusHierarchy.forEach((nodeId, index) => {
-    const isLeaf = index === focusHierarchy.length - 1;
+  const focusedNodeId = focusHierarchy[focusHierarchy.length - 1];
 
-    if (isLeaf) {
-      focusedNodeId = nodeId;
+  diff.focus.forEach((nodeId, index) => {
+    if (index === 0 && nodeId !== 'root') {
+      const node = nodes[nodeId] || defaultNode;
+      const parentId = node.parentId;
+      const parentNode = nodes[parentId] || defaultNode;
+
+      const children = parentNode.children;
+      const focusedChildIndex = Array.isArray(children) ? children.indexOf(nodeId) : -1;
+
+      updatedNodes[parentId] = {
+        isFocused: true,
+        isFocusedExact: false,
+        previousFocusedChildIndex: parentNode.focusedChildIndex,
+        focusedChildIndex
+      };
     }
 
-    let focusedChildIndex = null;
+    const isLeaf = index === diff.focus.length - 1;
     const thisNode = nodes[nodeId] || defaultNode;
+
+    let focusedChildIndex = null;
     if (!isLeaf) {
-      const nextNodeId = focusHierarchy[index + 1];
+      const nextNodeId = diff.focus[index + 1];
       const children = thisNode.children;
 
       focusedChildIndex = Array.isArray(children)
@@ -58,7 +77,7 @@ export default function getNodesFromFocusChange(
       previousFocusedChildIndex: thisNode.focusedChildIndex,
       focusedChildIndex,
     };
-  });
+  })
 
   return {
     nodes: updatedNodes,

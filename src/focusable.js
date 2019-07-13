@@ -13,28 +13,11 @@ import useOnChange from './hooks/use-on-change';
 
 let uniqueValue = 0;
 
-// Presently, the only impact a focus node has on the DOM is related to:
-//
-//   - isFocused
-//   - isFocusedExact
-//   - disabled
-//
-// through the form of the class names. Therefore, we only update the state
-// when one of these attributes change.
-function checkIfUpdateIsNecessary(one = {}, two = {}) {
-  const focusChanged = Boolean(one.isFocused) !== Boolean(two.isFocused);
-  const focusExactChanged =
-    Boolean(one.isFocusedExact) !== Boolean(two.isFocusedExact);
-  const disabledChanged = Boolean(one.disabled) !== Boolean(two.disabled);
-
-  return focusChanged || focusExactChanged || disabledChanged;
-}
-
 function checkForUpdate({ focusTree, focusNodeRef, idRef, setNode }) {
   const state = focusTree.getState();
   const newNode = state.nodes[idRef.current] || focusNodeRef.current;
 
-  if (checkIfUpdateIsNecessary(newNode, focusNodeRef.current)) {
+  if (newNode !== focusNodeRef.current) {
     // This ref is updated whenever `setNode` resolves, but there can be a delay
     // between when that occurs. For that reason, we manually update it here to
     // ensure that subsequent calls are using the _actual_ up-to-date node.

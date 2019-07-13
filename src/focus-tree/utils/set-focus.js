@@ -1,5 +1,5 @@
-import getUnfocusedNodes from './reset-focused-nodes';
 import getNodesFromFocusChange from './get-nodes-from-focus-change';
+import getFocusDiff from './get-focus-diff';
 import defaultNode from './default-node';
 
 export default function setFocus({
@@ -14,8 +14,13 @@ export default function setFocus({
     focusedNodeId,
   } = getNodesFromFocusChange(currentState, nodeId, orientation, preferEnd);
 
+  const diff = getFocusDiff({
+    focusHierarchy,
+    prevFocusHierarchy: currentState.focusHierarchy
+  });
+
   const updatedNodes = {};
-  const currentNodes = getUnfocusedNodes(currentState.nodes);
+  const currentNodes = currentState.nodes;
 
   for (let nodeId in nodeUpdates) {
     const update = nodeUpdates[nodeId];
@@ -26,6 +31,20 @@ export default function setFocus({
       ...currentNode,
       ...update,
     };
+  }
+
+  const blurredNode = {
+    isFocused: false,
+    isFocusedExact: false
+  };
+
+  for(let nodeId in diff.blur) {
+    const currentNode = currentNodes[nodeId];
+    updatedNodes[nodeId] = {
+      ...defaultNode,
+      ...currentNode,
+      ...blurredNode
+    }
   }
 
   let newState = {
