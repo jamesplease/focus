@@ -91,7 +91,7 @@ export default function createFocusTree({
   // Silently updates a node. This generally doesn't require a rerender as this only
   // affects changes to the node, and not the focus tree.
   // The exception is when the node is focused, in which case a new focus state is calculated.
-  function updateNode(nodeId, opts) {
+  function updateNode(nodeId, opts, silent) {
     const currentNode = currentState.nodes[nodeId];
 
     let wasFocused = currentNode.isFocused;
@@ -109,7 +109,7 @@ export default function createFocusTree({
       },
     };
 
-    if (!wasFocused) {
+    if (!wasFocused || silent) {
       currentState = newState;
     } else {
       // Recompute the focus using the parent
