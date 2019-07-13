@@ -47,6 +47,7 @@ This library has the following peer dependencies:
   - [\<FocusNode/\>](#FocusNode-)
   - [useIsFocused()](#useisfocused-focusid-options-)
   - [useSetFocus()](#usesetfocus)
+  - [useFocusTree()](#usefocustree)
   - [useFocusHierarchy()](#usefocushierarchy)
 - [**Prior Art**](#prior-art)
 - [**Limitations**](#limitations)
@@ -184,6 +185,23 @@ export default function MyComponent() {
 
   useEffect(() => {
     setFocus('settings');
+  }, []);
+}
+```
+
+### `useFocusTree()`
+
+A [Hook](https://reactjs.org/docs/hooks-intro.html) that returns the
+focus tree object.
+
+```js
+import { useFocusTree } from '@xdproto/focus';
+
+export default function MyComponent() {
+  const focusTree = useFocusTree();
+
+  useEffect(() => {
+    console.log('the current state', focusTree.getState());
   }, []);
 }
 ```
