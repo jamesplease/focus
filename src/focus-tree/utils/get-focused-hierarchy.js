@@ -39,30 +39,30 @@ function getChildren(nodes, node = {}, orientation, preferEnd) {
   if (Array.isArray(children) && children.length) {
     const lastIndex = Math.max(0, children.length - 1);
 
-    let activeChildId = children[0];
+    let focusedChildId = children[0];
 
     if (
-      node.restoreActiveChildIndex &&
-      typeof node.previousActiveChildIndex === 'number' &&
-      !isNodeDisabled(nodes, unfilteredChildren[node.previousActiveChildIndex])
+      node.restoreFocusedChildIndex &&
+      typeof node.previousFocusedChildIndex === 'number' &&
+      !isNodeDisabled(nodes, unfilteredChildren[node.previousFocusedChildIndex])
     ) {
-      activeChildId = unfilteredChildren[node.previousActiveChildIndex];
+      focusedChildId = unfilteredChildren[node.previousFocusedChildIndex];
     } else if (
       typeof node.defaultChildFocusIndex === 'number' &&
       !isNodeDisabled(nodes, unfilteredChildren[node.defaultChildFocusIndex])
     ) {
-      activeChildId = unfilteredChildren[node.defaultChildFocusIndex];
+      focusedChildId = unfilteredChildren[node.defaultChildFocusIndex];
     } else if (orientation === node.orientation) {
       const index = preferEnd ? lastIndex : 0;
-      activeChildId = children[index];
+      focusedChildId = children[index];
     }
 
-    results = [activeChildId];
+    results = [focusedChildId];
 
-    if (typeof activeChildId === 'string') {
-      const activeChild = nodes[activeChildId];
+    if (typeof focusedChildId === 'string') {
+      const focusedChild = nodes[focusedChildId];
       results = results.concat(
-        getChildren(nodes, activeChild, orientation, preferEnd)
+        getChildren(nodes, focusedChild, orientation, preferEnd)
       );
     }
   }

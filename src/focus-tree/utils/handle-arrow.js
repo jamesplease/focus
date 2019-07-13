@@ -59,9 +59,9 @@ export default function handleArrow({ currentState, arrow, setFocus }) {
       return;
     }
 
-    const currentActiveIndex = parentNode.activeChildIndex;
-    const currentActiveNodeId = parentNode.children[currentActiveIndex];
-    const currentActiveNode = currentState.nodes[currentActiveNodeId];
+    const currentFocusedIndex = parentNode.focusedChildIndex;
+    const currentFocusedNodeId = parentNode.children[currentFocusedIndex];
+    const currentFocusedNode = currentState.nodes[currentFocusedNodeId];
 
     setFocus(newFocusedId, orientation, preferEnd);
 
@@ -71,9 +71,9 @@ export default function handleArrow({ currentState, arrow, setFocus }) {
         direction,
         arrow,
         node: parentNode,
-        prevChildIndex: parentNode.activeChildIndex,
+        prevChildIndex: parentNode.focusedChildIndex,
         nextChildIndex: newIndex,
-        prevChildNode: currentActiveNode,
+        prevChildNode: currentFocusedNode,
         nextChildNode: newFocusedNode,
       });
     }

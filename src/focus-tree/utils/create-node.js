@@ -9,8 +9,8 @@ const defaultNode = {
   isFocusedExact: false,
 
   children: null,
-  activeChildIndex: null,
-  restoreActiveChildIndex: false,
+  focusedChildIndex: null,
+  restoreFocusedChildIndex: false,
 
   disabled: false,
 
@@ -52,7 +52,7 @@ export default function createNode(currentState, nodeId, opts = {}) {
     wrapping,
     orientation,
     defaultChildFocusIndex,
-    restoreActiveChildIndex,
+    restoreFocusedChildIndex,
 
     disabled,
   } = opts;
@@ -85,8 +85,8 @@ export default function createNode(currentState, nodeId, opts = {}) {
     mergedNode.defaultChildFocusIndex = defaultChildFocusIndex;
   }
 
-  if (typeof restoreActiveChildIndex !== 'undefined') {
-    mergedNode.restoreActiveChildIndex = Boolean(restoreActiveChildIndex);
+  if (typeof restoreFocusedChildIndex !== 'undefined') {
+    mergedNode.restoreFocusedChildIndex = Boolean(restoreFocusedChildIndex);
   }
 
   if (typeof disabled !== 'undefined') {

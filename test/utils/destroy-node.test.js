@@ -35,7 +35,7 @@ describe('destroyNode()', () => {
           isFocusedExact: false,
 
           children: ['one'],
-          activeChildIndex: 0,
+          focusedChildIndex: 0,
         },
 
         one: {
@@ -46,7 +46,7 @@ describe('destroyNode()', () => {
           isFocusedExact: true,
 
           children: null,
-          activeChildIndex: null,
+          focusedChildIndex: null,
         },
       },
     };
@@ -63,8 +63,8 @@ describe('destroyNode()', () => {
           isFocusedExact: true,
 
           children: null,
-          activeChildIndex: null,
-          previousActiveChildIndex: 0,
+          focusedChildIndex: null,
+          previousFocusedChildIndex: 0,
         },
       },
     });
@@ -83,7 +83,7 @@ describe('destroyNode()', () => {
   //         isFocusedExact: false,
 
   //         children: ['one', 'two'],
-  //         activeChildIndex: 0,
+  //         focusedChildIndex: 0,
   //       },
 
   //       one: {
@@ -94,7 +94,7 @@ describe('destroyNode()', () => {
   //         isFocusedExact: false,
 
   //         children: ['childOne', 'childTwo'],
-  //         activeChildIndex: 0,
+  //         focusedChildIndex: 0,
   //       },
 
   //       two: {
@@ -105,7 +105,7 @@ describe('destroyNode()', () => {
   //         isFocusedExact: false,
 
   //         children: null,
-  //         activeChildIndex: null,
+  //         focusedChildIndex: null,
   //       },
 
   //       childOne: {
@@ -116,7 +116,7 @@ describe('destroyNode()', () => {
   //         isFocusedExact: true,
 
   //         children: null,
-  //         activeChildIndex: null,
+  //         focusedChildIndex: null,
   //       },
 
   //       childTwo: {
@@ -127,7 +127,7 @@ describe('destroyNode()', () => {
   //         isFocusedExact: false,
 
   //         children: null,
-  //         activeChildIndex: null,
+  //         focusedChildIndex: null,
   //       },
   //     },
   //   };
@@ -144,7 +144,7 @@ describe('destroyNode()', () => {
   //         isFocusedExact: false,
 
   //         children: ['childOne', 'childTwo', 'two'],
-  //         activeChildIndex: 0,
+  //         focusedChildIndex: 0,
   //       },
 
   //       two: {
@@ -155,7 +155,7 @@ describe('destroyNode()', () => {
   //         isFocusedExact: false,
 
   //         children: null,
-  //         activeChildIndex: null,
+  //         focusedChildIndex: null,
   //       },
 
   //       childOne: {
@@ -166,7 +166,7 @@ describe('destroyNode()', () => {
   //         isFocusedExact: true,
 
   //         children: null,
-  //         activeChildIndex: null,
+  //         focusedChildIndex: null,
   //       },
 
   //       childTwo: {
@@ -177,7 +177,7 @@ describe('destroyNode()', () => {
   //         isFocusedExact: false,
 
   //         children: null,
-  //         activeChildIndex: null,
+  //         focusedChildIndex: null,
   //       },
   //     },
   //   });
