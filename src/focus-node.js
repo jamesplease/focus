@@ -36,6 +36,8 @@ export function FocusNode(
     nodeType = 'div',
     children,
 
+    mount = true,
+
     focusId,
     focusOnMount,
     wrapping,
@@ -62,6 +64,36 @@ export function FocusNode(
 ) {
   const nodeRef = useRef();
   const idRef = useRef(null);
+
+  const [appearClass, setAppearClass] = useState('appear');
+  const [enterClass, setEnterClass] = useState('');
+  const timeoutRef = useRef();
+
+  const appearRef = useRef(appearClass);
+  appearRef.current = appearClass;
+
+  useEffect(() => {
+    const to = setTimeout(() => {
+      setAppearClass('appear-active');
+    }, 35);
+
+    return () => {
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      clearTimeout(timeoutRef.current);
+      clearTimeout(to);
+    };
+  }, []);
+
+  useOnChange(mount, isMounted => {
+    if (isMounted && appearRef.current === 'appear-active') {
+      clearTimeout(timeoutRef.current);
+      setEnterClass('enter');
+      timeoutRef.current = setTimeout(() => setEnterClass('enter-active'), 35);
+    } else if (!isMounted) {
+      clearTimeout(timeoutRef.current);
+      setEnterClass('');
+    }
+  });
 
   if (idRef.current === null) {
     if (
@@ -208,9 +240,13 @@ export function FocusNode(
     }
   });
 
+  if (!mount) {
+    return null;
+  }
+
   const classString = `${className} ${isFocused ? focusedClass : ''} ${
     isFocusedExact ? focusedExactClass : ''
-  } ${disabled ? disabledClass : ''}`;
+  } ${disabled ? disabledClass : ''} ${enterClass} ${appearClass}`;
 
   const child =
     typeof children === 'function' ? children({ focusNode: node }) : undefined;
