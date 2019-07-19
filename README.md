@@ -140,8 +140,9 @@ All props are optional.
 | `focusId`                | string   | `{unique_id}`    | A unique identifier for this node. Specify this yourself for debugging purposes, or when you will need to manually set focus to the node. |
 | `focusOnMount`           | boolean  | `false`          | Whether or not to focus this node when the component mounts.                                                                              |
 | `orientation`            | string   | 'horizontal'     | Whether the children of this node are arranged horizontally or vertically.                                                                |
-| `wrapping`               | boolean  | 'false'          | Set to `true` for the navigation to wrap when the user reaches the start or end of the children list.                                     |
-| `disabled`               | boolean  | 'false'          | This node will not receive focus when `true`.                                                                                             |
+| `wrapping`               | boolean  | `false`          | Set to `true` for the navigation to wrap when the user reaches the start or end of the children list.                                     |
+| `disabled`               | boolean  | `false`          | This node will not receive focus when `true`.                                                                                             |
+| `mount`                  | boolean  | `true`           | Whether or not to mount to the DOM. Pass `false` to include this focus node in the focus tree without affecting the DOM.                  |
 | `defaultChildFocusIndex` | number   | 0                | The index of the child to move focus to when this element receives focused. Only applies for nodes with children.                         |
 | `onFocus`                | function |                  | A function that is called when the node receives focus.                                                                                   |
 | `onBlur`                 | function |                  | A function that is called when the node loses focus.                                                                                      |

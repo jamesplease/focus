@@ -32,6 +32,7 @@ export function FocusNode(
     focusedClass = 'isFocused',
     focusedExactClass = 'isFocusedExact',
     disabledClass = 'focusDisabled',
+    mount = true,
 
     nodeType = 'div',
     children,
@@ -207,6 +208,10 @@ export function FocusNode(
       );
     }
   });
+
+  if (!mount) {
+    return null;
+  }
 
   const classString = `${className} ${isFocused ? focusedClass : ''} ${
     isFocusedExact ? focusedExactClass : ''
