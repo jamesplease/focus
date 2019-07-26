@@ -248,9 +248,6 @@ export function FocusNode(
     isFocusedExact ? focusedExactClass : ''
   } ${disabled ? disabledClass : ''} ${enterClass} ${appearClass}`;
 
-  const child =
-    typeof children === 'function' ? children({ focusNode: node }) : undefined;
-
   return createElement(
     FocusContext.Provider,
     {
@@ -264,7 +261,7 @@ export function FocusNode(
         ref: nodeRef,
         className: classString,
       },
-      child
+      children
     )
   );
 }
@@ -278,7 +275,10 @@ ForwardedFocusNode.propTypes = {
   disabledClass: PropTypes.string,
 
   nodeType: PropTypes.string,
-  children: PropTypes.func,
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node,
+  ]),
 
   focusId: PropTypes.string,
   focusOnMount: PropTypes.bool,
