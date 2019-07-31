@@ -4,6 +4,5 @@ export default {
   ArrowDown: 'down',
   ArrowLeft: 'left',
   ArrowRight: 'right',
-  ' ': 'select',
   Enter: 'select',
 };
