@@ -46,7 +46,6 @@ This library has the following peer dependencies:
   - [\<FocusRoot/\>](#focusroot-)
   - [\<FocusNode/\>](#FocusNode-)
   - [useIsFocused()](#useisfocused-focusid-options-)
-  - [useSetFocus()](#usesetfocus)
   - [useFocusTree()](#usefocustree)
   - [useFocusHierarchy()](#usefocushierarchy)
 - [**Prior Art**](#prior-art)
@@ -173,22 +172,6 @@ export default function Profile() {
 }
 ```
 
-### `useSetFocus()`
-
-A [Hook](https://reactjs.org/docs/hooks-intro.html) that returns a function to update the focus.
-
-```js
-import { useSetFocus } from '@xdproto/focus';
-
-export default function MyComponent() {
-  const setFocus = useSetFocus();
-
-  useEffect(() => {
-    setFocus('settings');
-  }, []);
-}
-```
-
 ### `useFocusTree()`
 
 A [Hook](https://reactjs.org/docs/hooks-intro.html) that returns the
@@ -202,6 +185,8 @@ export default function MyComponent() {
 
   useEffect(() => {
     console.log('the current state', focusTree.getState());
+
+    focusTree.setFocus('my-node');
   }, []);
 }
 ```
