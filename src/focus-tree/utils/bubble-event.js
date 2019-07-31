@@ -16,12 +16,12 @@ export default function bubbleEvent({
     propagationStopped = true;
   }
 
-  [...nodeIds].reverse().forEach(focusedNodeId => {
+  [...nodeIds].reverse().forEach(targetNodeId => {
     if (propagationStopped) {
       return;
     }
 
-    const node = nodes[focusedNodeId];
+    const node = nodes[targetNodeId];
 
     if (!node) {
       return;
