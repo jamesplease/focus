@@ -26,8 +26,8 @@ describe('useIsFocused()', () => {
       const wrapper = ({ children }) => {
         return (
           <FocusRoot>
-            <FocusNode focusId="a">{() => <span>hi</span>}</FocusNode>
-            <FocusNode focusId="b">{() => children}</FocusNode>
+            <FocusNode focusId="a">hi</FocusNode>
+            <FocusNode focusId="b">{children}</FocusNode>
           </FocusRoot>
         );
       };
@@ -44,9 +44,9 @@ describe('useIsFocused()', () => {
         return (
           <FocusRoot>
             <FocusNode focusId="a">
-              {() => <FocusNode focusId="a.1" />}
+              <FocusNode focusId="a.1" />
             </FocusNode>
-            <FocusNode focusId="b">{() => children}</FocusNode>
+            <FocusNode focusId="b">{children}</FocusNode>
           </FocusRoot>
         );
       };
@@ -66,9 +66,9 @@ describe('useIsFocused()', () => {
         return (
           <FocusRoot>
             <FocusNode focusId="a">
-              {() => <FocusNode focusId="a.1" />}
+              <FocusNode focusId="a.1" />
             </FocusNode>
-            <FocusNode focusId="b">{() => children}</FocusNode>
+            <FocusNode focusId="b">{children}</FocusNode>
           </FocusRoot>
         );
       };
@@ -85,9 +85,9 @@ describe('useIsFocused()', () => {
         return (
           <FocusRoot>
             <FocusNode focusId="a">
-              {() => <FocusNode focusId="a.1" />}
+              <FocusNode focusId="a.1" />
             </FocusNode>
-            <FocusNode focusId="b">{() => children}</FocusNode>
+            <FocusNode focusId="b">{children}</FocusNode>
           </FocusRoot>
         );
       };
@@ -104,9 +104,9 @@ describe('useIsFocused()', () => {
         return (
           <FocusRoot>
             <FocusNode focusId="a">
-              {() => <FocusNode focusId="a.1" />}
+              <FocusNode focusId="a.1" />
             </FocusNode>
-            <FocusNode focusId="b">{() => children}</FocusNode>
+            <FocusNode focusId="b">{children}</FocusNode>
           </FocusRoot>
         );
       };
@@ -123,9 +123,9 @@ describe('useIsFocused()', () => {
         return (
           <FocusRoot>
             <FocusNode focusId="a">
-              {() => <FocusNode focusId="a.1" />}
+              <FocusNode focusId="a.1" />
             </FocusNode>
-            <FocusNode focusId="b">{() => children}</FocusNode>
+            <FocusNode focusId="b">{children}</FocusNode>
           </FocusRoot>
         );
       };
@@ -145,10 +145,10 @@ describe('useIsFocused()', () => {
         return (
           <FocusRoot>
             <FocusNode focusId="a">
-              {() => <FocusNode focusId="a.1" />}
+              <FocusNode focusId="a.1" />
             </FocusNode>
             <FocusNode focusId="b" focusOnMount>
-              {() => children}
+              {children}
             </FocusNode>
           </FocusRoot>
         );
