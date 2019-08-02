@@ -3,4 +3,7 @@ module.exports = {
     jest: true,
   },
   extends: ['../.eslintrc.js'],
+  rules: {
+    'react/prop-types': 'off',
+  },
 };
