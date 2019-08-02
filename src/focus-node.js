@@ -212,8 +212,7 @@ export function FocusNode(
     isFocusedExact ? focusedExactClass : ''
   } ${disabled ? disabledClass : ''}`;
 
-  const child =
-    typeof children === 'function' ? children({ focusNode: node }) : undefined;
+  const child = typeof children === 'function' ? children(node) : undefined;
 
   return createElement(
     FocusContext.Provider,
