@@ -129,32 +129,32 @@ A [Component](https://reactjs.org/docs/react-component.html) that represents a F
 
 All props are optional.
 
-| Prop                     | Type         | Default value    | Description                                                                                                                               |
-| ------------------------ | ------------ | ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
-| `propsFromNode`          | function     |                  | A function you can supply to compute additional props to apply to the element. The function is passed one argument: the focus node.       |
-| `className`              | string       |                  | A class name to apply to this element.                                                                                                    |
-| `focusedClass`           | string       | "isFocused"      | A class name that is applied when this element is focused.                                                                                |
-| `focusedExactClass`      | string       | "isFocusedExact" | A class name that is applied this element is exactly focused.                                                                             |
-| `disabledClass`          | string       | "focusDisabled"  | A class name that is applied this element is disabled.                                                                                    |
-| `nodeType`               | string\|node | 'div'            | The element to render. For instance, `"img"` or [`motion.div`](https://www.framer.com/api/motion/component/).                             |
-| `focusId`                | string       | `{unique_id}`    | A unique identifier for this node. Specify this yourself for debugging purposes, or when you will need to manually set focus to the node. |
-| `focusOnMount`           | boolean      | `false`          | Whether or not to focus this node when the component mounts.                                                                              |
-| `orientation`            | string       | 'horizontal'     | Whether the children of this node are arranged horizontally or vertically.                                                                |
-| `wrapping`               | boolean      | 'false'          | Set to `true` for the navigation to wrap when the user reaches the start or end of the children list.                                     |
-| `disabled`               | boolean      | 'false'          | This node will not receive focus when `true`.                                                                                             |
-| `defaultChildFocusIndex` | number       | 0                | The index of the child to move focus to when this element receives focused. Only applies for nodes with children.                         |
-| `onFocus`                | function     |                  | A function that is called when the node receives focus.                                                                                   |
-| `onBlur`                 | function     |                  | A function that is called when the node loses focus.                                                                                      |
-| `onKey`                  | function     |                  | A function that is called when the user presses any TV remote key while this element has focus.                                           |
-| `onArrow`                | function     |                  | A function that is called when the user presses a directional button.                                                                     |
-| `onLeft`                 | function     |                  | A function that is called when the user presses the left button.                                                                          |
-| `onUp`                   | function     |                  | A function that is called when the user presses the up button.                                                                            |
-| `onDown`                 | function     |                  | A function that is called when the user presses the down button.                                                                          |
-| `onRight`                | function     |                  | A function that is called when the user presses the right button.                                                                         |
-| `onSelect`               | function     |                  | A function that is called when the user pressed the select button.                                                                        |
-| `onBack`                 | function     |                  | A function that is called when the user presses the back button.                                                                          |
-| `onMove`                 | function     |                  | A function that is called when the focused child index of this node changes. Only called for nodes with children.                         |
-| `...rest`                | any          |                  | All other props are applied to the underlying DOM node.                                                                                   |
+| Prop                     | Type                | Default value    | Description                                                                                                                               |
+| ------------------------ | ------------------- | ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| `propsFromNode`          | function            |                  | A function you can supply to compute additional props to apply to the element. The function is passed one argument: the focus node.       |
+| `className`              | string              |                  | A class name to apply to this element.                                                                                                    |
+| `focusedClass`           | string              | "isFocused"      | A class name that is applied when this element is focused.                                                                                |
+| `focusedExactClass`      | string              | "isFocusedExact" | A class name that is applied this element is exactly focused.                                                                             |
+| `disabledClass`          | string              | "focusDisabled"  | A class name that is applied this element is disabled.                                                                                    |
+| `elementType`            | string\|elementType | 'div'            | The React element type to render. For instance, `"img"` or [`motion.div`](https://www.framer.com/api/motion/component/).                  |
+| `focusId`                | string              | `{unique_id}`    | A unique identifier for this node. Specify this yourself for debugging purposes, or when you will need to manually set focus to the node. |
+| `focusOnMount`           | boolean             | `false`          | Whether or not to focus this node when the component mounts.                                                                              |
+| `orientation`            | string              | 'horizontal'     | Whether the children of this node are arranged horizontally or vertically.                                                                |
+| `wrapping`               | boolean             | 'false'          | Set to `true` for the navigation to wrap when the user reaches the start or end of the children list.                                     |
+| `disabled`               | boolean             | 'false'          | This node will not receive focus when `true`.                                                                                             |
+| `defaultChildFocusIndex` | number              | 0                | The index of the child to move focus to when this element receives focused. Only applies for nodes with children.                         |
+| `onFocus`                | function            |                  | A function that is called when the node receives focus.                                                                                   |
+| `onBlur`                 | function            |                  | A function that is called when the node loses focus.                                                                                      |
+| `onKey`                  | function            |                  | A function that is called when the user presses any TV remote key while this element has focus.                                           |
+| `onArrow`                | function            |                  | A function that is called when the user presses a directional button.                                                                     |
+| `onLeft`                 | function            |                  | A function that is called when the user presses the left button.                                                                          |
+| `onUp`                   | function            |                  | A function that is called when the user presses the up button.                                                                            |
+| `onDown`                 | function            |                  | A function that is called when the user presses the down button.                                                                          |
+| `onRight`                | function            |                  | A function that is called when the user presses the right button.                                                                         |
+| `onSelect`               | function            |                  | A function that is called when the user pressed the select button.                                                                        |
+| `onBack`                 | function            |                  | A function that is called when the user presses the back button.                                                                          |
+| `onMove`                 | function            |                  | A function that is called when the focused child index of this node changes. Only called for nodes with children.                         |
+| `...rest`                | any                 |                  | All other props are applied to the underlying DOM node.                                                                                   |
 
 ```jsx
 import { FocusNode } from '@xdproto/focus';
@@ -162,7 +162,7 @@ import { FocusNode } from '@xdproto/focus';
 export default function Profile() {
   return (
     <FocusNode
-      nodeType="button"
+      elementType="button"
       className="profileBtn"
       onSelect={({ node }) => {
         console.log('The user just selected this profile', node);
