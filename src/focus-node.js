@@ -252,7 +252,10 @@ ForwardedFocusNode.propTypes = {
   disabledClass: PropTypes.string,
 
   nodeType: PropTypes.node,
-  children: PropTypes.func,
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node,
+  ]),
 
   focusId: PropTypes.string,
   focusOnMount: PropTypes.bool,
