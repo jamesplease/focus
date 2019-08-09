@@ -3,6 +3,7 @@ import {
   forwardRef,
   useRef,
   useContext,
+  useMemo,
   useState,
   useEffect,
   useImperativeHandle,
@@ -56,6 +57,7 @@ export function FocusNode(
     onFocus,
     onBlur,
 
+    propsFromNode,
     ...rest
   },
   ref
@@ -152,6 +154,12 @@ export function FocusNode(
     focusNodeRef.current = node;
   }, [node]);
 
+  const computedProps = useMemo(() => {
+    if (typeof propsFromNode === 'function') {
+      return propsFromNode(node);
+    }
+  }, [node, propsFromNode]);
+
   useEffect(() => {
     checkForUpdate({
       focusTree,
@@ -210,22 +218,28 @@ export function FocusNode(
 
   const classString = `${className} ${isFocused ? focusedClass : ''} ${
     isFocusedExact ? focusedExactClass : ''
-  } ${disabled ? disabledClass : ''}`;
-
-  const child =
-    typeof children === 'function'
-      ? children({
-          ...node,
-          className: classString,
-        })
-      : undefined;
+  } ${disabled ? disabledClass : ''} ${
+    computedProps && typeof computedProps.className === 'string'
+      ? computedProps.className
+      : ''
+  }`;
 
   return createElement(
     FocusContext.Provider,
     {
       value: providerValue,
     },
-    child
+    createElement(
+      nodeType,
+      {
+        ...rest,
+        ...computedProps,
+        disabled,
+        ref: nodeRef,
+        className: classString,
+      },
+      children
+    )
   );
 }
 
@@ -237,6 +251,7 @@ ForwardedFocusNode.propTypes = {
   focusedExactClass: PropTypes.string,
   disabledClass: PropTypes.string,
 
+  nodeType: PropTypes.node,
   children: PropTypes.func,
 
   focusId: PropTypes.string,
@@ -258,6 +273,8 @@ ForwardedFocusNode.propTypes = {
   onMove: PropTypes.func,
   onFocus: PropTypes.func,
   onBlur: PropTypes.func,
+
+  propsFromNode: PropTypes.func,
 };
 
 export default ForwardedFocusNode;
