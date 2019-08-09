@@ -1,23 +1,23 @@
 import React from 'react';
 import { renderHook } from 'react-hooks-testing-library';
-import { useIsFocused, FocusRoot, FocusNode } from '../src';
+import { useFocusNode, FocusRoot, FocusNode } from '../src';
 
-describe('useIsFocused()', () => {
+describe('useFocusNode()', () => {
   describe('just the root', () => {
     it('returns true when checking for root focus', () => {
-      const { result } = renderHook(() => useIsFocused('root'), {
+      const { result } = renderHook(() => useFocusNode('root'), {
         wrapper: FocusRoot,
       });
 
-      expect(result.current).toBe(true);
+      expect(result.current.isFocused).toBe(true);
     });
 
     it('returns false when checking for non-root focus', () => {
-      const { result } = renderHook(() => useIsFocused('pizza'), {
+      const { result } = renderHook(() => useFocusNode('pizza'), {
         wrapper: FocusRoot,
       });
 
-      expect(result.current).toBe(false);
+      expect(result.current.isFocused).toBeFalsy();
     });
   });
 
@@ -32,11 +32,11 @@ describe('useIsFocused()', () => {
         );
       };
 
-      const { result } = renderHook(() => useIsFocused('root'), {
+      const { result } = renderHook(() => useFocusNode('root'), {
         wrapper,
       });
 
-      expect(result.current).toBe(true);
+      expect(result.current.isFocused).toBe(true);
     });
 
     it('returns false when checking for root exact focus', () => {
@@ -51,14 +51,11 @@ describe('useIsFocused()', () => {
         );
       };
 
-      const { result } = renderHook(
-        () => useIsFocused('root', { exact: true }),
-        {
-          wrapper,
-        }
-      );
+      const { result } = renderHook(() => useFocusNode('root'), {
+        wrapper,
+      });
 
-      expect(result.current).toBe(false);
+      expect(result.current.isFocusedExact).toBe(false);
     });
 
     it('returns true when checking for "a" focus', () => {
@@ -73,11 +70,11 @@ describe('useIsFocused()', () => {
         );
       };
 
-      const { result } = renderHook(() => useIsFocused('a'), {
+      const { result } = renderHook(() => useFocusNode('a'), {
         wrapper,
       });
 
-      expect(result.current).toBe(true);
+      expect(result.current.isFocused).toBe(true);
     });
 
     it('returns false when checking for "a" exact focus', () => {
@@ -92,11 +89,11 @@ describe('useIsFocused()', () => {
         );
       };
 
-      const { result } = renderHook(() => useIsFocused('a', { exact: true }), {
+      const { result } = renderHook(() => useFocusNode('a'), {
         wrapper,
       });
 
-      expect(result.current).toBe(false);
+      expect(result.current.isFocusedExact).toBe(false);
     });
 
     it('returns true when checking for "a.1" focus', () => {
@@ -111,11 +108,11 @@ describe('useIsFocused()', () => {
         );
       };
 
-      const { result } = renderHook(() => useIsFocused('a.1'), {
+      const { result } = renderHook(() => useFocusNode('a.1'), {
         wrapper,
       });
 
-      expect(result.current).toBe(true);
+      expect(result.current.isFocused).toBe(true);
     });
 
     it('returns true when checking for "a.1" exact focus', () => {
@@ -130,14 +127,11 @@ describe('useIsFocused()', () => {
         );
       };
 
-      const { result } = renderHook(
-        () => useIsFocused('a.1', { exact: true }),
-        {
-          wrapper,
-        }
-      );
+      const { result } = renderHook(() => useFocusNode('a.1'), {
+        wrapper,
+      });
 
-      expect(result.current).toBe(true);
+      expect(result.current.isFocusedExact).toBe(true);
     });
 
     it('returns respects focusOnMount', () => {
@@ -154,11 +148,11 @@ describe('useIsFocused()', () => {
         );
       };
 
-      const { result } = renderHook(() => useIsFocused('b', { exact: true }), {
+      const { result } = renderHook(() => useFocusNode('b'), {
         wrapper,
       });
 
-      expect(result.current).toBe(true);
+      expect(result.current.isFocusedExact).toBe(true);
     });
   });
 });

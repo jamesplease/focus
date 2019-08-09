@@ -45,7 +45,7 @@ This library has the following peer dependencies:
 - [**API**](#api)
   - [\<FocusRoot/\>](#focusroot-)
   - [\<FocusNode/\>](#FocusNode-)
-  - [useIsFocused()](#useisfocused-focusid-options-)
+  - [useFocusNode()](#usefocusnode-focusid-)
   - [useFocusTree()](#usefocustree)
   - [useFocusHierarchy()](#usefocushierarchy)
 - [**Prior Art**](#prior-art)
@@ -194,17 +194,17 @@ export default function MyComponent() {
 }
 ```
 
-### `useIsFocused( focusId, [options] )`
+### `useFocusNode( focusId )`
 
-A [Hook](https://reactjs.org/docs/hooks-intro.html) that returns a boolean representing whether or not the node
-with an ID of `focusId` is focused.
+A [Hook](https://reactjs.org/docs/hooks-intro.html) that returns the focus node with ID `focusId`.
 
 ```js
-import { useIsFocused } from '@xdproto/focus';
+import { useFocusNode } from '@xdproto/focus';
 
 export default function MyComponent() {
-  const buttonIsFocused = useIsFocused('button');
-  const buttonIsExactlyFocused = useIsFocused('button', { exact: true });
+  const buttonFocusNode = useFocusNode('my-button');
+
+  console.log('Is the button focused?', buttonFocusNode.isFocused);
 }
 ```
 

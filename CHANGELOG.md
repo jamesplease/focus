@@ -8,12 +8,13 @@
 - Renamed `nodeType` prop to `elementType`
 - Typing a space is no longer treated as a selection input
 - `useSetFocus` has been removed. Use `useFocusTree` instead.
+- Removed `useIsFocused`. Use `useFocusNode` instead.
 
 **New features**
 
 - React Element Types are now supported through the `elementType` prop
-- New prop: `propsFromNode`
-- New hook: `useFocusTree`
+- New props: `propsFromNode`, `onMount`, `onUnmount`
+- New hooks: `useFocusTree`, `useFocusNode`
 - `defaultChildFocusIndex` can now be updated dynamically
 - The leaf nodes impacted by a focus change event are passed into the `onFocus` and `onBlur` prop callbacks
 
