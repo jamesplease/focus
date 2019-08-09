@@ -1,5 +1,26 @@
 # Changelog
 
+### v2.0.0 (2019/8/x)
+
+**Breaking changes**
+
+- Renamed `Focusable` component to `FocusNode`
+- Renamed `nodeType` prop to `elementType`
+- Typing a space is no longer treated as a selection input
+- `useSetFocus` has been removed. Use `useFocusTree` instead.
+
+**New features**
+
+- React Element Types are now supported through the `elementType` prop
+- New prop: `propsFromNode`
+- New hook: `useFocusTree`
+- `defaultChildFocusIndex` can now be updated dynamically
+- The leaf nodes impacted by a focus change event are passed into the `onFocus` and `onBlur` prop callbacks
+
+**Other**
+
+- Improved performance
+
 ### v1.0.1 (2019/7/12)
 
 - Fix an issue where `useFocusHierarchy` would not reflect the latest hierarchy
