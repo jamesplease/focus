@@ -34,7 +34,7 @@ export function FocusNode(
     focusedExactClass = 'isFocusedExact',
     disabledClass = 'focusDisabled',
 
-    nodeType = 'div',
+    elementType = 'div',
     children,
 
     focusId,
@@ -230,7 +230,7 @@ export function FocusNode(
       value: providerValue,
     },
     createElement(
-      nodeType,
+      elementType,
       {
         ...rest,
         ...computedProps,
@@ -251,7 +251,7 @@ ForwardedFocusNode.propTypes = {
   focusedExactClass: PropTypes.string,
   disabledClass: PropTypes.string,
 
-  nodeType: PropTypes.node,
+  elementType: PropTypes.elementType,
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),
     PropTypes.node,
