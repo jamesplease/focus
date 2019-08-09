@@ -143,6 +143,8 @@ All props are optional.
 | `wrapping`               | boolean             | 'false'          | Set to `true` for the navigation to wrap when the user reaches the start or end of the children list.                                     |
 | `disabled`               | boolean             | 'false'          | This node will not receive focus when `true`.                                                                                             |
 | `defaultChildFocusIndex` | number              | 0                | The index of the child to move focus to when this element receives focused. Only applies for nodes with children.                         |
+| `onMount`                | function            |                  | A function that is called when the element mounts. Passed the focus node as the first argument.                                           |
+| `onUnmount`              | function            |                  | A function that is called when the element unmounts. Passed the focus node as the first argument.                                         |
 | `onFocus`                | function            |                  | A function that is called when the node receives focus.                                                                                   |
 | `onBlur`                 | function            |                  | A function that is called when the node loses focus.                                                                                      |
 | `onKey`                  | function            |                  | A function that is called when the user presses any TV remote key while this element has focus.                                           |
@@ -205,14 +207,6 @@ export default function MyComponent() {
   const buttonIsExactlyFocused = useIsFocused('button', { exact: true });
 }
 ```
-
-The properties of the object returned from the hook are:
-
-| Property                    | Type     | Description                                     |
-| --------------------------- | -------- | ----------------------------------------------- |
-| `isFocused( focusId )`      | function | Returns `true` if `focusId` is focused.         |
-| `isFocusedExact( focusId )` | function | Returns `true` if `focusId` is exactly focused. |
-| `setFocus( focusId )`       | function | Move focus to `focusId`.                        |
 
 ### `useFocusHierarchy()`
 

@@ -45,6 +45,8 @@ export function FocusNode(
     restoreFocusedChildIndex,
     disabled,
 
+    onMount,
+    onUnmount,
     onKey,
     onArrow,
     onLeft,
@@ -160,6 +162,17 @@ export function FocusNode(
     }
   }, [node, propsFromNode]);
 
+  const callbackRefs = useRef({
+    onMount,
+    onUnmount,
+  });
+  useEffect(() => {
+    callbackRefs.current = {
+      onMount,
+      onUnmount,
+    };
+  }, [onUnmount, onMount]);
+
   useEffect(() => {
     checkForUpdate({
       focusTree,
@@ -167,6 +180,10 @@ export function FocusNode(
       idRef,
       setNode,
     });
+
+    if (typeof callbackRefs.current.onMount === 'function') {
+      callbackRefs.current.onMount(focusNodeRef.current);
+    }
 
     const unsubscribe = focusTree.subscribe(() => {
       checkForUpdate({
@@ -177,7 +194,13 @@ export function FocusNode(
       });
     });
 
-    return () => unsubscribe();
+    return () => {
+      unsubscribe();
+
+      if (typeof callbackRefs.current.onUnmount === 'function') {
+        callbackRefs.current.onUnmount(focusNodeRef.current);
+      }
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
