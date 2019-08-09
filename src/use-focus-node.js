@@ -35,7 +35,7 @@ export default function useFocusNode(focusId) {
 
       if (node !== currentNode) {
         currentNode = node;
-        setFocusNode(focus);
+        setFocusNode(node);
       }
     });
 
