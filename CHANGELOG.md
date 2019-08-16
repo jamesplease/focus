@@ -13,7 +13,7 @@
 **New features**
 
 - React Element Types are now supported through the `elementType` prop
-- New props: `propsFromNode`, `onMount`, `onUnmount`
+- New props: `propsFromNode`, `onMount`, `onUnmount`, `render`
 - New hooks: `useFocusTree`, `useFocusNode`
 - `defaultChildFocusIndex` can now be updated dynamically
 - The leaf nodes impacted by a focus change event are passed into the `onFocus` and `onBlur` prop callbacks
