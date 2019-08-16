@@ -60,6 +60,7 @@ export function FocusNode(
     onBlur,
 
     propsFromNode,
+    render,
     ...rest
   },
   ref
@@ -247,6 +248,13 @@ export function FocusNode(
       : ''
   }`;
 
+  let child;
+  if (children) {
+    child = children;
+  } else if (typeof render === 'function') {
+    child = render(node);
+  }
+
   return createElement(
     FocusContext.Provider,
     {
@@ -261,7 +269,7 @@ export function FocusNode(
         ref: nodeRef,
         className: classString,
       },
-      children
+      child
     )
   );
 }

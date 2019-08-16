@@ -156,6 +156,8 @@ All props are optional.
 | `onSelect`               | function            |                  | A function that is called when the user pressed the select button.                                                                        |
 | `onBack`                 | function            |                  | A function that is called when the user presses the back button.                                                                          |
 | `onMove`                 | function            |                  | A function that is called when the focused child index of this node changes. Only called for nodes with children.                         |
+| `children`               | React node          |                  | Children of the Focus Node.                                                                                                               |
+| `render`                 | function            |                  | A render prop you may specify instead of `children`. It is passed one argument: the focus node.                                           |
 | `...rest`                | any                 |                  | All other props are applied to the underlying DOM node.                                                                                   |
 
 ```jsx
