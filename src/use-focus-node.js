@@ -14,16 +14,17 @@ export default function useFocusNode(focusId) {
   });
 
   useEffect(() => {
+    let currentNode = focusNode;
+
     const node = getFocusNode({
       focusId,
       focusTree,
     });
 
-    let currentNode = node;
-
     // This check is here in the event that the mounting of the component affects the focus state
     // (a useEffect called before this hook could have changed focus before the subscribe below is called)
     if (node !== currentNode) {
+      currentNode = node;
       setFocusNode(currentNode);
     }
 
