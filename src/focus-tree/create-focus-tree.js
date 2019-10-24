@@ -59,12 +59,14 @@ export default function createFocusTree({
       preferEnd,
     });
 
+    const oldState = currentState;
+    currentState = newState;
+
     emitEvents({
-      currentState,
+      currentState: oldState,
       nextState: newState,
     });
 
-    currentState = newState;
     onUpdate();
   }
 
