@@ -3,6 +3,8 @@
 [![Travis build status](http://img.shields.io/travis/jamesplease/focus.svg?style=flat)](https://travis-ci.org/jamesplease/focus)
 [![npm version](https://img.shields.io/npm/v/@xdproto/focus.svg)](https://www.npmjs.com/package/@xdproto/focus)
 
+> ⚠️ This library is deprecated; please use https://github.com/jamesplease/lrud instead
+
 A [React](https://reactjs.org/) library for managing focus in TV apps.
 
 ✓ Controls LRUD navigation for you – automatically  
